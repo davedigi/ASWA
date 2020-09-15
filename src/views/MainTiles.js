@@ -8,7 +8,7 @@ class MainTiles extends React.Component {
         return (
             <div>
                 {/* <ProductCard /> */}
-                <Product />
+                {/* <Product /> */}
                 <ListProducts />
             </div>
         )

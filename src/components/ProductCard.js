@@ -73,15 +73,12 @@ export default function MediaCard() {
         ],
     });
     return (
-        <div class="flex bg-gray-200">
-            <div class="flex-initial text-gray-700 text-center bg-gray-400 px-4 py-2 m-2" >
-                Short
+        <div class="flex max-w-3xl px-2 bg-teal-200">
+
+            <div class="flex text-gray-700 text-center bg-green-300 px-4 py-2 m-2 max-w-2xl rounded-lg overflow-hidden shadow-lg">
+                Next selling input
             </div>
-            <div class="flex-initial text-gray-700 text-center bg-gray-400 px-4 py-2 m-2">
-                Medium length
-            </div>
-            <div>
-                <Card class="flex-initial text-gray-700 text-center bg-green-300 px-4 py-2 m-2">
+                <Card class="flex-1 text-gray-700 text-center bg-green-300 px-4 py-2 m-2 max-w-2xl rounded-lg overflow-hidden shadow-lg">
                     <CardActionArea>
                         <CardMedia
                             className={classes.media}
@@ -109,7 +106,6 @@ export default function MediaCard() {
                 </Button>
                     </CardActions>
                 </Card>
-            </div>
         </div>
     );
 }
