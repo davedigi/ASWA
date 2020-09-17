@@ -1,13 +1,12 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
 
 const header = () => {
     return (
-            <Box className="App-header" p={1} >
-                <Box p={1} flexGrow={1} >
+            <div class="" >
+                <div  >
                     Auction Sales System
-                </Box>
-            </Box>
+                </div>
+            </div>
     )
 }
 
