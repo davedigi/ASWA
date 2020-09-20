@@ -3,17 +3,16 @@ import React from 'react';
 import './App.css';
 // import Button from '@material-ui/core/Button';
 import MainTiles from './views/MainTiles';
-import AWSADashboard from './views/AWSADashboard';
-import Header from './components/Header';
-import AWSAFooter from './components/AWSAFooter';
+import Header from './components/shared/Header';
+import Footer from './components/shared/Footer.js'
 
 
 function App() {
   return (
     <>
-      <Header />
-      <AWSADashboard />
-      <AWSAFooter />
+      <Header title="WIM Social Network"/>
+      <MainTiles />
+      <Footer />
     </>
   );
 }

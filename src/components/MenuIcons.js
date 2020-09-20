@@ -2,8 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-// eslint-disable-next-line no-unused-vars
-import Box from "@material-ui/core/Box";
 // import RestoreIcon from '@material-ui/icons/Restore';
 // import FavoriteIcon from '@material-ui/icons/Favorite';
 // import LocationOnIcon from '@material-ui/icons/LocationOn';

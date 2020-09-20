@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 const MainAuction = () => {
   const classes = useStyles();
   const [count, setCount] = useState(0);
-  const [running, setRunning] = React.useState(true);
+  const [running, setRunning] = useState(true);
   // const timerRef = React.useRef(0);
   // React.useEffect(
   //   () => () => {
@@ -63,7 +63,7 @@ const MainAuction = () => {
   //   },
   //   [],
   // );
-  const [progress, setProgress] = React.useState(10);
+  const [progress, setProgress] = useState(10);
 
   React.useEffect(() => {
     const timer = setInterval(() => {

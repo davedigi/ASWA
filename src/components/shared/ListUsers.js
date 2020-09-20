@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CheckboxListSecondary() {
   const classes = useStyles();
   const [checked, setChecked] = React.useState([1]);
-  const [Radiochecked, setRadioChecked] = React.useState("wifi");
+  const [radiochecked, setRadioChecked] = React.useState("wifi");
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -36,8 +36,8 @@ export default function CheckboxListSecondary() {
   };
 
   const handleToggleRadio = (value) => () => {
-    const currentIndex = Radiochecked.indexOf(value);
-    const newChecked = [...Radiochecked];
+    const currentIndex = radiochecked.indexOf(value);
+    const newChecked = [...radiochecked];
 
     if (currentIndex === -1) {
       newChecked.push(value);
@@ -48,8 +48,8 @@ export default function CheckboxListSecondary() {
   };
 
   return (
-    <div class="mt-8 w-full rounded bg-white shadow max-w-2xl flex-row items-center px-10">
-      <h1 class="text-xl font-bold mb-3">Buyers in the stand</h1>
+    <div className="mt-8 w-full rounded bg-white shadow max-w-2xl flex-row items-center px-10">
+      <h1 className="text-xl font-bold mb-3">Buyers in the stand</h1>
       <List dense className={classes.root}>
         {[0, 1, 2, 3].map((value) => {    // TODO: inserire un modello di acquirenti valido
           const labelId = `checkbox-list-secondary-label-${value}`;
@@ -67,7 +67,7 @@ export default function CheckboxListSecondary() {
                 <Switch
                   edge="end"
                   onChange={handleToggleRadio("wifi")}
-                  Radiochecked={Radiochecked.indexOf("wifi") !== -1}
+                  radiochecked={(radiochecked.indexOf("wifi") !== -1? "true":"false")}
                   inputProps={{ "aria-labelledby": "switch-list-label-wifi" }}
                 />
 
@@ -76,7 +76,7 @@ export default function CheckboxListSecondary() {
                   onChange={handleToggle(value)}
                   checked={checked.indexOf(value) !== -1}
                   inputProps={{ "aria-labelledby": labelId }}
-                /><span>Active</span>
+                /><span>Active Credit Card</span>
               </ListItemSecondaryAction>
             </ListItem>
           );
