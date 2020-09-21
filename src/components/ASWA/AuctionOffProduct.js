@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { orange, red } from '@material-ui/core/colors';
 import AvTimerIcon from '@material-ui/icons/AvTimer'
 import RotateRightIcon from '@material-ui/icons/RotateRight'
+import TextField from "@material-ui/core/TextField";
 
 // start css --- TODO: parametrizzare con button.tsx
 const MaxiButtonASWA = withStyles((theme) => ({
@@ -67,10 +68,11 @@ const item = {
 }
 
 
-export default function MediaCard() {
+export default function AuctionOffProduct() {
     const classes = useStyles();
     const [running, setRunning] = useState(true);
     const [progress, setProgress] = useState(10);
+    const [text, setText] = useState('gerbere');
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -82,14 +84,39 @@ export default function MediaCard() {
     }, []);
 
     function handleClick(val, step, msg) {
-        console.log(val,step,msg)
+        console.log(val, step, msg)
         //   setCount(count + step);
         // alert(msg);
         setRunning((prevLoading) => !prevLoading);
-    }
+    };
 
+    const onChangeHandler = () => {
+        console.log('pippo')
+    }
+    // onKeyDown(event) {
+    //     if (event.keyCode === RETURN_KEY_CODE) {
+    //         let text = event.target.value.trim();
+    //         if (text == '') {
+    //             return;
+    //         }
+    //         TodosStore.add(event.target.value.trim());
+
+    //         // clear input
+    //         event.target.value = '';
+    //     }
+    // }
     return (
         <div className="flex-column text-gray-700 text-center bg-green-300 px-4 py-2 m-2 max-w-2xl rounded-lg overflow-hidden shadow-lg">
+            <form>
+                <TextField
+                    required
+                    id="standard-required"
+                    label="Required"
+                    // defaultValue="Flower name"
+                    value={item.article.item.translatedLabel}
+                    onChange={onChangeHandler}
+                />
+            </form>
             <h1 className="text-2xl font-bold mb-3">
                 {item.article.item.translatedLabel}
             </h1>

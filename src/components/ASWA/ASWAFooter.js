@@ -13,7 +13,7 @@ function handleClick(msg) {
   // console.log(val,step,msg)
   alert(msg);
 }
-const AWSAFooter = () => {
+const ASWAFooter = () => {
   const classes = useStyles();
   return (
     <div>
@@ -35,4 +35,4 @@ const AWSAFooter = () => {
   )
 }
 
-export default AWSAFooter
+export default ASWAFooter

@@ -18,6 +18,7 @@ export function useAxiosGet(url){
             })
             .catch(()=>{
                 console.log("ERRORE dentro axios")
+                alert("ERRORE dentro axios")
                 setRequest({
                     data: null,
                     error: true

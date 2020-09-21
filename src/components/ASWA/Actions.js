@@ -1,6 +1,6 @@
 import React from 'react'
-import StartAction from './actionServices/StartAuction'
-import StopAction from './actionServices/StopAuction'
+import StartAuction from './../AWSA/actionServices/StartAuction';
+import StopAuction from './../AWSA/actionServices/StopAuction';
 
 
 const Actions = ({ recordk, actionServices }) => (
