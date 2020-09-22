@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 });
 
 const item = {
-    "id": "6a1b9efc-67d7-4033-a5ce-dfeafe3f1cf2",
+    "id": "G127",
     "finalPrice": null,
     "minOrderableQuantity": 5,
     "stockQuantity": 95,
@@ -68,19 +68,20 @@ const item = {
 }
 
 
-export default function AuctionOffProduct() {
+export default function AuctionOffProduct(props) {
     const classes = useStyles();
     const [running, setRunning] = useState(true);
     const [progress, setProgress] = useState(10);
-    const [text, setText] = useState('gerbere');
+
+    console.log(props.preparedItem)
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
+        // const timer = setInterval(() => {
+        //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+        // }, 1800);
+        // return () => {
+        //     clearInterval(timer);
+        // };
     }, []);
 
     function handleClick(val, step, msg) {
@@ -91,7 +92,7 @@ export default function AuctionOffProduct() {
     };
 
     const onChangeHandler = () => {
-        console.log('pippo')
+        console.log('onchangehandler')
     }
     // onKeyDown(event) {
     //     if (event.keyCode === RETURN_KEY_CODE) {
@@ -107,6 +108,17 @@ export default function AuctionOffProduct() {
     // }
     return (
         <div className="flex-column text-gray-700 text-center bg-green-300 px-4 py-2 m-2 max-w-2xl rounded-lg overflow-hidden shadow-lg">
+            <div className="flex space-x-2">
+                <div className="relative w-16 h-16">
+                    <img className="rounded-full border border-gray-100 shadow-sm" src="https://randomuser.me/api/portraits/women/81.jpg" alt="supplier" />
+                    <div className="absolute top-0 right-0 h-4 w-4 my-1 border-2 border-white rounded-full bg-green-400 z-2"></div>
+                </div>
+
+                <span className="text-lg font-bold ml-3">
+                    {/* {props.preparedItem.supplier.legalname} */}
+                </span>
+
+            </div>
             <form>
                 <TextField
                     required
@@ -120,7 +132,7 @@ export default function AuctionOffProduct() {
             <h1 className="text-2xl font-bold mb-3">
                 {item.article.item.translatedLabel}
             </h1>
-            <div>
+            <div className="text-xl font-bold mb-2">
                 Code: {item.id}
             </div>
             {/* <div className="max-w-screen-xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between"> */}

@@ -13,17 +13,18 @@ const Navbar = (props) => {
     });
     arr.map((item) => {
         console.log(item[1].label, item[1].url, item[1].active)
+        return ""
     })
 
     return (
-        <Box component="nav" >
-            <AppBar >
-                {arr.map((item) => (
-                    <Link to={item[1].url} key={item[1].id} >{item[1].label}</Link>
-                ))
-                }
-            </AppBar>
-        </Box>
+        <div className="flex flex-wrap">
+            {arr.map((item) => (
+             <div key={item[1].id} className="w-1/4 ml-auto justify-right bg-gray-400 h-12">
+                    <Link to={item[1].url}  >{item[1].label}</Link>
+                </div>
+            ))
+            }
+        </div> 
     )
 }
 

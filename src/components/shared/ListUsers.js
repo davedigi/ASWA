@@ -76,7 +76,7 @@ export default function CheckboxListSecondary() {
                   onChange={handleToggle(value)}
                   checked={checked.indexOf(value) !== -1}
                   inputProps={{ "aria-labelledby": labelId }}
-                /><span>Active Credit Card</span>
+                /><span>Banker's Credit</span>
               </ListItemSecondaryAction>
             </ListItem>
           );

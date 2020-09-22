@@ -11,7 +11,8 @@ import ListProductsGrid from "./components/ListProductsGrid";
 import Navbar from './components/Navbar';
 
 const userInfoLoaded = true;
-const logged = true;
+// const logged = true;
+const logged = false;
 
 const onLogout = async () => {
   return "LOGOUT";
@@ -40,7 +41,7 @@ function App() {
       <Router>
         <Header title="Auction Sales System" />
         {userInfoLoaded && (
-          <div className="relative pr-5 flex flex-col sm:flex-row sm:items-center">
+          <div className="">
             {logged ? (
               <>
                 <Link to="/profile" className="mr-4 hidden sm:flex -my-2">
@@ -90,7 +91,7 @@ function App() {
         )}
         {/* <MainTiles /> */}
         <div>
-          {/* <Navbar items={menu} /> */}
+          <Navbar items={menu} />
           <Route path="/aswadashboard" component={ASWADashboard} />
           <Route path="/listproducts-tb" component={ListProductsTable} />
           <Route path="/listproducts" component={ListProductsGrid} />
