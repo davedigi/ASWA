@@ -2,7 +2,6 @@ import Box from '@material-ui/core/Box';
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import { Link } from 'react-router-dom';
-import "./shared/utils"
 
 const Navbar = (props) => {
     // alert(JSON.stringify(props.items))

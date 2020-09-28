@@ -6,8 +6,10 @@ import { orange, red } from '@material-ui/core/colors';
 import AvTimerIcon from '@material-ui/icons/AvTimer'
 import RotateRightIcon from '@material-ui/icons/RotateRight'
 import TextField from "@material-ui/core/TextField";
+import Timer from "./Timer100"
 
-// start css --- TODO: parametrizzare con button.tsx
+
+// start css --- TODO: parametrizzare con TailwindCSS
 const MaxiButtonASWA = withStyles((theme) => ({
     root: {
         width: 260,
@@ -70,12 +72,13 @@ const item = {
 
 export default function AuctionOffProduct(props) {
     const classes = useStyles();
-    const [running, setRunning] = useState(true);
+    const [running, setRunning] = useState(false);
     const [progress, setProgress] = useState(10);
 
-    console.log(props.preparedItem)
+    console.log("preparedItem=", props.preparedItem)
 
     useEffect(() => {
+        console.log("useffect calling.")
         // const timer = setInterval(() => {
         //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
         // }, 1800);
@@ -120,7 +123,7 @@ export default function AuctionOffProduct(props) {
 
             </div>
             <form>
-                <TextField
+                <TextField className="text-2xl font-bold mb-3"
                     required
                     id="standard-required"
                     label="Required"
@@ -129,9 +132,6 @@ export default function AuctionOffProduct(props) {
                     onChange={onChangeHandler}
                 />
             </form>
-            <h1 className="text-2xl font-bold mb-3">
-                {item.article.item.translatedLabel}
-            </h1>
             <div className="text-xl font-bold mb-2">
                 Code: {item.id}
             </div>
@@ -147,6 +147,7 @@ export default function AuctionOffProduct(props) {
                     <Button size="small" variant="outlined" color="primary" href="#outlined-buttons">
                         Edit
                 </Button>
+                    {(running ? <span className="timer-font"><Timer loop={true} /></span> : "")}
                 </div>
             </div>
             <div>

@@ -1,5 +1,4 @@
 import React from "react";
-// import logo from './logo.svg';
 import "./App.css";
 import Button from "@material-ui/core/Button";
 import Header from "./components/shared/Header";
@@ -9,6 +8,11 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import ListProductsTable from "./components/ListProductsTable";
 import ListProductsGrid from "./components/ListProductsGrid";
 import Navbar from './components/Navbar';
+import  Login  from './components/shared/Login';
+import UseAsync from './Hooks/UseAsync';
+import MainTiles from './views/MainTiles';
+import AlertComponent from './components/shared/ErrorMessage';
+import Timer from './components/ASWA/Timer100';
 
 const userInfoLoaded = true;
 // const logged = true;
@@ -19,7 +23,7 @@ const onLogout = async () => {
 };
 
 function App() {
-  const [menu, setMenu] = React.useState({
+  const menu = React.useState({
     login: { id: 2, label: "Login", url: "/login", active: true },
     register: { id: 3, label: "Register", url: "/register", active: true },
     aswa: {
@@ -39,11 +43,12 @@ function App() {
   return (
     <>
       <Router>
-        <Header title="Auction Sales System" />
         {userInfoLoaded && (
           <div className="">
             {logged ? (
               <>
+                <Header title="Auction Sales System" />
+                <Navbar items={menu} />
                 <Link to="/profile" className="mr-4 hidden sm:flex -my-2">
                   ProfileLogo
                 </Link>
@@ -58,16 +63,11 @@ function App() {
               </>
             ) : (
                 <>
-                  <Link to="/" className="sm:mr-4 block mt-4 sm:mt-0">
-                    <Button
-                      type="OUTLINE"
-                      size="small"
-                      className="block w-full sm:w-auto"
-                    >
-                      Home
-                  </Button>
-                  </Link>
-                  <Link to="/login" className="sm:mr-4 block mt-4 sm:mt-0">
+                  {/* <MainTiles title="Now i'm developing this modules:" /> */}
+
+
+                  {/* <UseAsync /> */}
+                  <Link to="/login" className="sm:mr-4 block mt-4 sm:mt-0"> 
                     <Button
                       type="OUTLINE"
                       size="small"
@@ -75,23 +75,16 @@ function App() {
                     >
                       Login
                   </Button>
-                  </Link>
-                  <Link to="/signup" className="sm:mr-4 block mt-4 sm:mt-0">
-                    <Button
-                      type="OUTLINE"
-                      size="small"
-                      className="block w-full sm:w-auto"
-                    >
-                      Register
-                  </Button>
-                  </Link>
+                  </Link> 
                 </>
               )}
           </div>
         )}
         {/* <MainTiles /> */}
         <div>
-          <Navbar items={menu} />
+          <Route path="/login" component={Login} />
+          <Route path="/home" component={App} />
+          <Route path="/error" component={AlertComponent} />
           <Route path="/aswadashboard" component={ASWADashboard} />
           <Route path="/listproducts-tb" component={ListProductsTable} />
           <Route path="/listproducts" component={ListProductsGrid} />

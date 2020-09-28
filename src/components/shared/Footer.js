@@ -17,8 +17,8 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <div>
-      <Box className="App-footer" p={1} m={1} >
-        <Box width="100%"> &copy; WIM 2020 </Box>
+      <Box className="App-footer"   >
+        <Box className=""> &copy; WIM 2020 </Box>
       </Box >
 
     </div >
