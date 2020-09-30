@@ -1,7 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { ACCESS_TOKEN_NAME, API_BASE_URL } from "../Hooks/apiContants";
 import PropTypes from "prop-types";
 
 // Fabio Biondi code review (without axios)

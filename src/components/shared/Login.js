@@ -1,8 +1,8 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom';
 import axios from 'axios'
-import { ACCESS_TOKEN_NAME, API_BASE_URL } from '../../Hooks/apiContants'
-
+import { ACCESS_TOKEN_NAME, APP_BASE_URL, APP_PORT } from '../../Hooks/apiContants'
+import AlertComponent from './AlertComponent';
 
 function Login(props) {
 
@@ -17,6 +17,15 @@ function Login(props) {
       password: "",
       successMessage: null
    })
+
+
+   /* YOU CAN'T DO THIS: 
+      <button onClick={removeBill(index)}>𝗫</button>
+      because the expression inside onClick is going to be executed on mount.This is going to delete all the bills in the list, as soon as the app is started.
+   
+      Instead, this is what YOU NEED TO DO, using arrow functions:
+      <button onClick={() => removeBill(index)}>𝗫</button>
+    */
    const handleChange = (e) => {
       const { id, value } = e.target
       setState(prevState => ({
@@ -24,14 +33,16 @@ function Login(props) {
          [id]: value
       }))
    }
-
    const handleSubmitClick = (e) => {
       e.preventDefault();
+      console.log('value del click=', e.target.value)
       const payload = {
          "email": state.email,
          "password": state.password,
       }
-      axios.post(API_BASE_URL + '/user/login', payload)
+      console.log('vado ad autorizzare user ', state.email,)
+      // axios.post(APP_BASE_URL + ':' + APP_PORT + '/user/login', payload)
+      axios.post('http://localhost:4000/user/login', payload)
          .then(function (response) {
             if (response.status === 200) {
                setState(prevState => ({
@@ -39,30 +50,52 @@ function Login(props) {
                   'successMessage': 'Login successful. Redirecting to home page..'
                }))
                localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
-               // redirectToHome();
-               alert("login ok, token=", response.data.token)
+               console.log("login ok", payload, " e token=", response.data.token)
                props.showError(null)
+               redirectToHome();
             }
             else if (response.code === 204) {
-               alert("Username and password do not match");
+               console.log("Username and password do not match");
                props.showError("Username and password do not match");
             }
             else {
-               alert("Username does not exists");
+               console.log("Username does not exists");
                props.showError("Username does not exists");
             }
          })
          .catch(function (error) {
-            alert("error",error)
-            console.log(error);
+            if (error.response) {
+               // The request was made and the server responded with a status code
+               // that falls out of the range of 2xx
+               const message = error.response.data.errors
+               message.map((item) => {
+                  console.log('err message from backend=', item.msg);
+                  props.showError(item.msg);
+                  return null
+               })
+               console.log(error.response.status);
+               console.log(error.response.headers);
+            } else if (error.request) {
+               // The request was made but no response was received
+               // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+               // http.ClientRequest in node.js
+               console.log(error.request);
+            } else {
+               // Something happened in setting up the request that triggered an Error
+               console.log('Error', error.message);
+            }
+            console.log(error.config);
+            console.log(error.toJSON());
+            console.log("CATCH error in axios.post", error)
          });
    }
+
    const redirectToHome = () => {
       // props.updateTitle('Home')
-      props.history.push('/aswadashboard');
+      props.history.push('/home');
    }
    const redirectToRegister = () => {
-      props.history.push('/aswadashboard');
+      props.history.push('/register');
       // props.updateTitle('Register');
    }
    return (
@@ -90,14 +123,24 @@ function Login(props) {
 
                   <div className="flex flex-col pt-4">
                      <label htmlFor="password" className="text-lg">Password</label>
-                     <input type="password" id="password" placeholder="Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                     <input type="password"
+                        id="password"
+                        placeholder="Password"
+                        value={state.password}
+                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                     />
                   </div>
-
-                  <input onClick={() => handleSubmitClick()} type="submit" value="Log In" className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8" />
-               </form>
-               <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
+                  <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
                   {state.successMessage}
                </div>
+                  <button type="submit"
+                     onClick={handleSubmitClick}
+                     className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
+                  >Log In</button>
+               </form>
+
+               <AlertComponent errorMessage={state.successMessage} hideError={''} />
                <div className="text-center pt-12 pb-12">
                   <span>Dont have an account? </span>
                   <span className="loginText" onClick={() => redirectToRegister()}>Register</span>
