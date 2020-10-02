@@ -34,11 +34,15 @@ function Home(props) {
   return (
     <div className="w-full max-w-4xl mx-auto ml-4 ">
       <MainTiles />
-      <button type="submit" 
+      <button type="submit"
         onClick={redirectToASWA}
         className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
       >-> Enter ASWA
       </button>
+      <div>
+        https://speakerdeck.com/jaketrent/getting-into-frontend-dev-today
+        {/* <script async className="speakerdeck-embed" data-id="f7fcd7ad9ff6426991a063b9b8aa1f11" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script> */}
+      </div>
     </div>
   )
 }

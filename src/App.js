@@ -29,23 +29,7 @@ function App() {
   const [title, updateTitle] = useState(null);
   const [errorMessage, updateErrorMessage] = useState(null)
 
-/*   const menu = useState({
-    login: { id: 2, label: "Login", url: "/login", active: true },
-    register: { id: 3, label: "Register", url: "/register", active: true },
-    aswa: {
-      id: 0,
-      label: "Auction Sales System",
-      url: "/aswadashboard",
-      active: true,
-    },
-    listproducts: {
-      id: 1,
-      label: "List Products",
-      url: "/listproducts-tb",
-      active: true,
-    },
-  }); */ 
-  // console.log(menu);
+
 
 
   return (
@@ -66,7 +50,6 @@ function App() {
                         <>
                           <Link to="/login" className="sm:mr-4 block mt-4 sm:mt-0">
                             <button
-                              size="large"
                               className="    bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                             >
                               Login
@@ -76,7 +59,6 @@ function App() {
                             <div className="text-center pt-12 pb-12 pr-2">
                               <span>Dont have an account?</span>
                               <span
-                                size="large"
                                 className="    bg-blue-200 hover:bg-blue-400 text-blue font-bold py-2 px-4 rounded-full"
                               >
                                 Register

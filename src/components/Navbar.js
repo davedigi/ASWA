@@ -1,26 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import JSONPretty from 'react-json-pretty'
 
 const Navbar = (props) => {
     // alert(JSON.stringify(props.items))
     const arr = Object.entries(props.items);
-    console.log('arr in entrata=', arr)
-    arr.sort((a, b) => {
-        return a[1].id - b[1].id;
+    console.log('navbar arr in entrata=', arr[0])
+    arr[0].sort((a, b) => {
+        return a[0].id - b[0].id;
     });
-    arr.map((item) => {
-        console.log('arr iterato=', item[1].label, item[1].url, item[1].active)
-        return ""
+    const voices = []
+    arr[0].map((item) => {
+        Object.keys(item).forEach(function (key) {
+            voices.push(item[key]);
+        });
+        return voices
     })
-
+    /*   const valids = voices.some(voice => voice.active);
+        console.log(valids); // true */
+    voices.forEach((element, index, array) => {
+        console.log('index', index); // 0, 1, 2
+        console.log('id=', element.id); // 100, 200, 300
+        console.log('label=', element.label); // 100, 200, 300
+        console.log('url=', element.url); // 100, 200, 300
+        // console.log('voices', array); // same myArray object 3 times
+    });
     return (
         <div className="flex flex-wrap">
-            {arr.map((item) => (
-                <div key={item[1].id} className="w-1/4 ml-auto justify-right bg-gray-400 h-12">
-                    <Link to={item[1].url}  >{item[1].label}</Link>
+            {voices.map((element) => (
+                <div key={element.id} className="w-1/5 ml-auto text-sm justify-right bg-gray-400 h-10">
+                    <Link key={element.id} to={element.url}  >{element.label}</Link>
                 </div>
             ))
             }
+            {/* <JSONPretty data={props.items} /> */}
         </div>
     )
 }

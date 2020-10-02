@@ -12,8 +12,7 @@ import Timer from '../components/ASWA/Timer100';
 import logo from "../logo.svg"
 
 
-const H2 = ({ children }: { children: React.ReactNode }) => <h2 className="text-lg font-extrabold mt-5">{children}</h2>;
-const P = ({ children }: { children: React.ReactNode }) => <p className="mb-3 leading-tight">{children}</p>;
+
 
 function MainTiles(props) {
     const users = useCrud("http://jsonplaceholder.typicode.com/users")
@@ -27,12 +26,12 @@ function MainTiles(props) {
             payload: user
         })
     }
-/*     const arr = Object.entries(users);
-    console.log('stringify:', JSON.stringify(arr))
-    arr.map((item) => {
-        console.log('map(item1):', item[1])
-        return ""
-    }); */
+    /*     const arr = Object.entries(users);
+        console.log('stringify:', JSON.stringify(arr))
+        arr.map((item) => {
+            console.log('map(item1):', item[1])
+            return ""
+        }); */
 
 
     return (
@@ -48,9 +47,10 @@ function MainTiles(props) {
                     <a href="/#" className="bg-black text-white font-bold text-xl p-4">
                         <span className="timer-font"><Timer loop={true} /></span>
                     </a>
-                </div><H2>Web Human Experience</H2>
-                <h3>{props.title}</h3>
-{/*                 <div className="app">
+                </div>
+                    <div className="my-blockquote">Web Human Experience</div>
+            <h3>{props.title}</h3>
+            {/*                 <div className="app">
                     <H2>Users Map</H2>
                     { <input value={word} onChange={e => setWord(e.target.value)} /> }
                     { <button onClick={getAssociations}>Find Associations</button> }
@@ -69,16 +69,16 @@ function MainTiles(props) {
                     )}
                 </div>
  */}
-                <userContext.Provider
-                    value={{
-                        users: state.users,
-                        addUser
-                    }}>
+    <userContext.Provider
+        value={{
+            users: state.users,
+            addUser
+        }}>
 
-                </userContext.Provider>
-            </div>
-            {/* <ListUsers /> */}
-            {/* <ListProductsTable /> */}
+    </userContext.Provider>
+        </div >
+        {/* <ListUsers /> */ }
+    {/* <ListProductsTable /> */ }
         </div >
     )
 }
