@@ -8,6 +8,7 @@ import { ADD_USER } from '../context/types';
 import { MyPaper } from '../components/shared/Paper'; // custom Paper 
 import { MyTitle } from '../components/shared/Title'; // custom Title
 */
+import {P,H2} from '../components/shared/SharedStyleComponents'
 import Timer from '../components/ASWA/Timer100';
 import logo from "../logo.svg"
 

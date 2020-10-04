@@ -19,7 +19,7 @@ import PrivateRoute from './components/shared/PrivateRoute'
 
 
 const onLogout = async () => {
-  return "LOGOUT";
+  return <div>logout...</div>;
 };
 
 function App() {

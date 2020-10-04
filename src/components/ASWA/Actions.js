@@ -1,6 +1,6 @@
 import React from 'react'
-import StartAuction from './../AWSA/actionServices/StartAuction';
-import StopAuction from './../AWSA/actionServices/StopAuction';
+import StartAuction from './../ASWA/actionServices/StartAuction';
+import StopAuction from './../ASWA/actionServices/StopAuction';
 
 
 const Actions = ({ pdd, actionServices }) => (

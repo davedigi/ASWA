@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useAxiosGet } from '../Hooks/HttpRequests';
 import Skeleton from 'react-loading-skeleton';
 
+// TODO usare useCrud.js con mongodb
 function Product() {
     // const {id} = useParams();
     // const url=`https://5f2a8d0d6ae5cc0016422a91.mockapi.io/api/v1/products/${id}`

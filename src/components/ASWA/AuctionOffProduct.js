@@ -87,11 +87,11 @@ export default function AuctionOffProduct(props) {
     /*   const valids = voices.some(voice => voice.active);
         console.log(valids); // true */
     arr.forEach((element, index, array) => {
-        console.log('che cosa =', index, element[1]);
+        // console.log('che cosa =', index, element[1]);
         // console.log('all array elements ', array); // same myArray object 3 times
     });
-    console.log("------------->", supplier.legalname)
-    console.log("------------->", flower.code)
+    // console.log("------------->", supplier.legalname)
+    console.log("------------->", flower.code, flower.imageurl)
 
     useEffect(() => {
         console.log("AuctionOffProduct: useffect calling.")
@@ -136,7 +136,7 @@ export default function AuctionOffProduct(props) {
     //     }
     // }
     return (
-        <div className="flex-column text-gray-700 text-center bg-green-300 px-4 py-2 m-2 max-w-2xl rounded-lg overflow-hidden shadow-lg">
+        <div className="flex-column w-50 min-w-0 max-w-2xl text-gray-700 text-center bg-green-300 px-4 py-2 m-2  rounded-lg overflow-hidden shadow-lg">
             <form>
                 <div className="flex">
                     <div className="flex space-x-4 mr-20">
@@ -174,14 +174,14 @@ export default function AuctionOffProduct(props) {
                 <div className="max-w-screen-xl mx-auto   lg:flex lg:items-center ">
 
                     <div className="inline-block rounded-lg m-2 py-2 px-2 max-w-xs shadow-xs">
-                        <img src={flower.imageUrl} alt={flower.descr} />
+                        <img src={require('../../'+flower.imageurl)} alt={flower.descr} />
                     </div>
 
                     {(running ?
                         <span className="timer-font"><Timer loop={true} /></span>
                         :
                         <div className="flex font-bold text-xl m-1 p-10">
-                            <span className="flex align-baseline">Min price: €</span>
+                            <span className=" inline-block align-baseline">Min price: €</span>
                             <input className="flex w-12 m-2" value={flower.minprice} />
                             <button type="button" className=" bg-blue-200 hover:bg-blue-400 text-blue font-bold py-2 px-4 rounded-full" aria-label="Edit" onClick={() => handleClick(2, 1, 'EDIT Action Service Called')}>
                                 <span aria-hidden="true">&times;</span>

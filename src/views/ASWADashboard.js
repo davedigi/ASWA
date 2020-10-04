@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import MenuIcons from '../components/MenuIcons';
+import MenuIcons from '../components/ASWA/MenuIcons';
 import AuctionOffProduct from "../components/ASWA/AuctionOffProduct"
 import Header from "../components/shared/Header"
 import Navbar from '../components/Navbar';
@@ -25,7 +26,7 @@ export default function ASWADashboard() {
             "product": {
                 code: "G127",
                 descr: "Gerbere Milanesi 90%",
-                imageurl:"/assets/products/gerbere-milanesi.jpg",
+                imageurl:"/src/assets/products/gerbere-milanesi.jpg",
                 minprice: 10.20,
                 suggestedprice: 12.67
             }

@@ -43,7 +43,7 @@ const Header = (props) => {
         // </nav >
         <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-1 fixed w-full z-10 pin-t">
             <div className="flex items-center flex-no-shrink text-white mr-6">
-                <img src="/src/assets/draw/undraw_season_change_f99v.svg" alt="" />
+                <img className="w-10 mx-2" src={require('../../logo.svg')} alt="logo" />
                 <ClockTick />
                 <a className="text-white no-underline hover:text-white hover:no-underline" href="/#">
                     <span className="text-2xl pl-6">

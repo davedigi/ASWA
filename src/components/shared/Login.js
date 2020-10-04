@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom';
 import axios from 'axios'
-import { ACCESS_TOKEN_NAME, APP_BASE_URL, APP_PORT } from '../../Hooks/apiContants'
+import { ACCESS_TOKEN_NAME, APP_API_URL, APP_API_PORT } from '../../Hooks/apiContants'
 import AlertComponent from './AlertComponent';
 
 function Login(props) {
@@ -41,8 +41,7 @@ function Login(props) {
          "password": state.password,
       }
       console.log('vado ad autorizzare user ', state.email,)
-      // axios.post(APP_BASE_URL + ':' + APP_PORT + '/user/login', payload)
-      axios.post('http://localhost:4000/user/login', payload)
+      axios.post(APP_API_URL + ':' + APP_API_PORT + '/user/login', payload)
          .then(function (response) {
             if (response.status === 200) {
                setState(prevState => ({
@@ -67,14 +66,14 @@ function Login(props) {
             if (error.response) {
                // The request was made and the server responded with a status code
                // that falls out of the range of 2xx
-               const message = error.response.data.errors
-               message.map((item) => {
-                  console.log('err message from backend=', item.msg);
-                  props.showError(item.msg);
-                  return null
-               })
+               const message = error.response.data.message
+
+               console.log('err message from backend=', message);
+               props.showError(message);
+
                console.log(error.response.status);
                console.log(error.response.headers);
+               return null
             } else if (error.request) {
                // The request was made but no response was received
                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -131,9 +130,10 @@ function Login(props) {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                      />
                   </div>
+                  <AlertComponent errorMessage={state.successMessage} />
                   <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
-                  {state.successMessage}
-               </div>
+                     {state.successMessage}
+                  </div>
                   <button type="submit"
                      onClick={handleSubmitClick}
                      className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
@@ -150,7 +150,6 @@ function Login(props) {
          </div>
          <div className="w-1/2 shadow-2xl">
             <img className="object-cover w-full  md:max-h-full lg:h-screen hidden md:block" src="https://images.unsplash.com/photo-1521321205814-9d673c65c167?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1038&q=80" alt="" />
-
          </div>
       </div >
    )

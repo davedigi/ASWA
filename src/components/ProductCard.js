@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     },
 });
 
-
+// TODO usare useCrud.js con mongodb
 // export default function ProductCard() {
 const ProductCard = () => {
     const classes = useStyles();
