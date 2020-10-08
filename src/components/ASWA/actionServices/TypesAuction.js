@@ -1,14 +1,16 @@
 
-export const watchStates = {
+export const clockStates = {
    IDLE: "IDLE",
    UP: "UP",
    START: "START",
-   COMPLETED: "COMPLETED"
+   STOP: "STOP",
+   COMPLETED: "WIN",
+   CANCELLED:"CANCEL"
 }
 
-export interface IWatchStates {
+export interface IClockStates {
    Label?: string;
-   State: watchStates;
+   State: clockStates;
 }
 
 // class Demo extends React.Component<IWatchStates> {}

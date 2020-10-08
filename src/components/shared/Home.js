@@ -7,7 +7,6 @@ import {
 } from "../../Hooks/apiContants"
 import MainTiles from '../../views/MainTiles';
 
-
 function Home(props) {
   useEffect(() => {
     console.log('useEffect Home chiamo /user/me')

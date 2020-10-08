@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
-import Button from "@material-ui/core/Button";
 import Home from "./components/shared/Home";
-import Header from "./components/shared/Header";
-import Footer from "./components/shared/Footer.js";
+import Footer from "./components/shared/Footer";
 import ASWADashboard from "./views/ASWADashboard";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-import ListProductsTable from "./components/ListProductsTable";
-import ListProductsGrid from "./components/ListProductsGrid";
-import Navbar from './components/Navbar';
 import Login from './components/shared/Login';
-import UseAsync from './Hooks/UseAsync';
-import MainTiles from './views/MainTiles';
-import AlertComponent from './components/shared/ErrorMessage';
-import Timer from './components/ASWA/Timer100';
 import logo from "./logo.svg"
 import PrivateRoute from './components/shared/PrivateRoute'
+import AlertComponent from "./components/shared/AlertComponent";
 
 
 const onLogout = async () => {
@@ -28,9 +20,6 @@ function App() {
   const [logged, setLogged] = useState(false);
   const [title, updateTitle] = useState(null);
   const [errorMessage, updateErrorMessage] = useState(null)
-
-
-
 
   return (
     <>
@@ -91,8 +80,8 @@ function App() {
               </PrivateRoute>
               <Route path="/error" component={AlertComponent} />
               <PrivateRoute path="/aswadashboard" component={ASWADashboard} />
-              <PrivateRoute path="/listproducts-tb" component={ListProductsTable} />
-              <PrivateRoute path="/listproducts" component={ListProductsGrid} />
+              {/* <PrivateRoute path="/listproducts-tb" component={ListProductsTable} /> */}
+              {/* <PrivateRoute path="/listproducts" component={ListProductsGrid} /> */}
             </Switch>
             <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage} />
           </div>
