@@ -4,7 +4,7 @@ import React from 'react';
 export default class Timer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tickk: 1000 }; // suggested 1000
+    this.state = { tickk: props.spin*100 }; // suggested 1000
   }
 
   tick() {
@@ -22,7 +22,7 @@ export default class Timer extends React.Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(this.props.loop), 100);
+    this.interval = setInterval(() => this.tick(this.props.loop), 40);
   }
 
   componentWillUnmount() {

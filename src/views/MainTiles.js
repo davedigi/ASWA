@@ -1,9 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom';
-import useCrud from '../Hooks/useCrud';
+/* import useCrud from '../Hooks/useCrud';
 import userReducer from '../context/UserReducer';
 import userContext from '../context/UserContext';
-import { ADD_USER } from '../context/types';
+import { ADD_USER } from '../context/types'; */
 /*
 import { MyPaper } from '../components/shared/Paper'; // custom Paper 
 import { MyTitle } from '../components/shared/Title'; // custom Title
@@ -16,7 +16,7 @@ import logo from "../logo.svg"
 
 
 function MainTiles(props) {
-    const users = useCrud("http://jsonplaceholder.typicode.com/users")
+/*     const users = useCrud("http://jsonplaceholder.typicode.com/users")
     const initialState = { users: users }
 
     const [state, dispatch] = React.useReducer(userReducer, initialState)
@@ -26,7 +26,7 @@ function MainTiles(props) {
             type: ADD_USER,
             payload: user
         })
-    }
+    } */
     /*     const arr = Object.entries(users);
         console.log('stringify:', JSON.stringify(arr))
         arr.map((item) => {
@@ -70,13 +70,13 @@ function MainTiles(props) {
                     )}
                 </div>
  */}
-    <userContext.Provider
+{/*     <userContext.Provider
         value={{
             users: state.users,
             addUser
         }}>
 
-    </userContext.Provider>
+    </userContext.Provider> */}
         </div >
         {/* <ListUsers /> */ }
     {/* <ListProductsTable /> */ }

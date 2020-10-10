@@ -7,7 +7,7 @@ import RotateRightIcon from '@material-ui/icons/RotateRight'
 import TextField from "@material-ui/core/TextField";
 import Timer from "./Timer100"
 import { IClockStates, clockStates } from "./actionServices/TypesAuction"
-import StartAuction from './actionServices/StartAuction';
+import StartAuction2 from './actionServices/StartAuction2';
 import StopAuction from './actionServices/StopAuction';
 
 
@@ -78,6 +78,8 @@ export default function AuctionOffProduct(props) {
     const [clkState, setClkState] = useState(clockStates.IDLE)
     const [displayState, setDisplayState] = useState(clockStates.START)
     const [drand, setDrand] = useState(0)
+    const [clockwiseBtn, setclockwiseBtn] = useState(false)
+    const [clockParams, setClockParams] = useState({})
 
     /*     const [preparedItem, setPreparedItem] = React.useState([     
             {"supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' }},
@@ -155,6 +157,19 @@ export default function AuctionOffProduct(props) {
         const rand = 1 + Math.random() * (60);
         setDrand(Math.round(rand));
 
+        setClockParams({
+            clkState: clkState,
+            spin: drand,
+            clockwise: clockwiseBtn,
+            startPrice_cent: drand * 100,
+            // minPrice_cent: (flower.minprice,
+            minPrice_cent: Math.round((drand*75)),  // DEBUG TODO
+            speed_ms: 20,
+            tailSize: 10
+        })
+
+        console.log("setClockParams=", clockParams)
+
         switch (state) {
             case clockStates.START:
                 console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
@@ -164,6 +179,7 @@ export default function AuctionOffProduct(props) {
                 break;
             case clockStates.UP:
                 console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
+                setclockwiseBtn(true)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
                 setRunning(true);
@@ -196,7 +212,8 @@ export default function AuctionOffProduct(props) {
 
     const onChangeHandler = (event) => {
         console.log('onchangehandler', event)
-        alert('rand=', drand)
+        localStorage.setItem("CLOCK_START_PRODUCT", flower)
+        localStorage.setItem("CLOCK_START_SUPPLIER", supplier)
     }
 
     // onKeyDown(event) {
@@ -255,41 +272,42 @@ export default function AuctionOffProduct(props) {
                         <img className="sm:w-64 w-56" src={imgURI} alt={flower.descr} />
                     </div>
 
-                    {running && clkState === clockStates.STOP && <StartAuction rand={drand} clkState={clkState} spin={drand} />}
+                    {running && clkState === clockStates.STOP && <StartAuction2 clockParams={clockParams}/>}
                     {!running && clkState === clockStates.CANCELLED && <StopAuction rand={drand} clkState={clkState} />}
-
-                    <div className="">
-                        <div className="inline-block font-bold  m-1 ">
-                            <span className="text-lg">Min price: €</span>
-                            <span className="text-2xl w-4 m-1 h-4">12.34</span>
-                            <button
-                                type="button"
-                                className="bg-blue-300 hover:bg-blue-400 text-blue font-bold py-3 align-text-top ml-1 px-3 rounded-full"
-                                aria-label="edit"
-                                onClick={() => onChangeHandler("EDIT Action Service Called")}
-                            >
+                    {!running &&
+                        <div className="">
+                            <div className="inline-block font-bold  m-1 ">
+                                <span className="text-lg">Min price: €</span>
+                                <span className="text-2xl w-4 m-1 h-4">{flower.minprice}</span>
+                                <button
+                                    type="button"
+                                    className="bg-blue-300 hover:bg-blue-400 text-blue font-bold py-3 align-text-top ml-1 px-3 rounded-full"
+                                    aria-label="edit"
+                                    onClick={() => onChangeHandler("EDIT Action Service Called")}
+                                >
+                                    <span aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div className="inline-block font-bold m-1 ">
+                                <span className="text-lg">suggested: €</span>
+                                <span className="text-2xl w-4 m-1 h-4">{flower.suggestedprice}</span>
                                 <span aria-hidden="true"></span>
-                            </button>
+                            </div>
+                            <div className="font-bold text-xl mt-4 ">
+                                <span className="mr-2">Spin</span>
+                                <select><option>{drand}</option></select>
+                            </div>
                         </div>
-                        <div className="inline-block font-bold m-1 ">
-                            <span className="text-lg">suggested: €</span>
-                            <span className="text-2xl w-4 m-1 h-4">16.55</span>
-                            <span aria-hidden="true"></span>
-                        </div>
-                        <div className="font-bold text-xl mt-4 ">
-                            <span className="mr-2">Spin</span>
-                            <select><option>{drand}</option></select>
-                        </div>
-                    </div>
                     }
                 </div>
                 <div>
                     <MidButtonASWA variant="contained" className={classes.button}
-                        value={clkState}
+                        value={clockwiseBtn}
                         endIcon={<RotateRightIcon
                             style={{ fontSize: 50 }}>send
                       </RotateRightIcon>}
-                        onClick={() => handleClick(clockStates.UP, 1, ' Action Service Called')}
+                        onClick={() => handleClick(clockStates.UP, 1, ' UP click Action called')}
+
                     >
                         UP
                     </MidButtonASWA>
@@ -299,7 +317,7 @@ export default function AuctionOffProduct(props) {
                         endIcon={<AvTimerIcon
                             style={{ fontSize: 50 }}>send
                       </AvTimerIcon>}
-                        onClick={() => handleClick((clkState), 1, ' Action Service Called')}>
+                        onClick={() => handleClick((clkState), 1, 'START/STOP click Action Called')}>
                         {displayState}
                     </MaxiButtonASWA>
                 </div>

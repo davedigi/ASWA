@@ -27,8 +27,8 @@ export default function ASWADashboard() {
                 descr: "Gerbere Milanesi 90%",
                 // imageurl:"assets/products/gerbere-milanesi.jpg",
                 imageurl:"/gerbere-milanesi.jpg",
-                minprice: 10.20,
-                suggestedprice: 12.67
+                minprice: 1020,
+                suggestedprice: 1267
             }
         },
     ], [])
