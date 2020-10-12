@@ -45,7 +45,7 @@ const StopAuction = (props) => {
    StopAuctionService()
    return (
       <div>
-         STOP OROLOGIO!
+         
 
       </div>
    )

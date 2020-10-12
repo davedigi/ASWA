@@ -17,7 +17,7 @@ export const clockStates = {
    START: "START",
    STOP: "STOP",
    COMPLETED: "WIN",
-   CANCELLED:"CANCEL"
+   CANCELLED:"CANC"
 }
 
 export interface IClockStates {

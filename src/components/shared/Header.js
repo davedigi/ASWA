@@ -12,7 +12,7 @@ const ClockTick = () => {
     }
 
     useEffect(() => {
-        console.log("ClockTick: ENTRO in useEffect()")
+        console.log("orologio header: ENTRO in useEffect()")
         const timer = setInterval(() => {
             setData((Data) => (new Date()))
         }, 1000);

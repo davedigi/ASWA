@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import { orange, red } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button'
+import { orange, red } from '@material-ui/core/colors'
 import AvTimerIcon from '@material-ui/icons/AvTimer'
 import RotateRightIcon from '@material-ui/icons/RotateRight'
-import TextField from "@material-ui/core/TextField";
-import Timer from "./Timer100"
+import TextField from "@material-ui/core/TextField"
 import { IClockStates, clockStates } from "./actionServices/TypesAuction"
-import StartAuction2 from './actionServices/StartAuction2';
-import StopAuction from './actionServices/StopAuction';
+import StartAuction2 from './actionServices/StartAuction2'
+import StopAuction from './actionServices/StopAuction'
+import DisplayGDD from './actionServices/DisplayGDD'
 
 
 // start css --- TODO: parametrizzare con TailwindCSS
@@ -77,6 +77,7 @@ export default function AuctionOffProduct(props) {
     const [running, setRunning] = useState(false)
     const [clkState, setClkState] = useState(clockStates.IDLE)
     const [displayState, setDisplayState] = useState(clockStates.START)
+    const [displayGDD, setDisplayGDD] = useState(false)
     const [drand, setDrand] = useState(0)
     const [clockwiseBtn, setclockwiseBtn] = useState(false)
     const [clockParams, setClockParams] = useState({})
@@ -102,8 +103,10 @@ export default function AuctionOffProduct(props) {
     const imgURI = flower.imageurl
     // console.log(imgURI)
 
-
     useEffect(() => {
+
+        localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(flower))
+        localStorage.setItem("CLOCK_START_SUPPLIER", JSON.stringify(supplier))
 
         console.log("USEFFECT Automa da STATO:", clkState)
 
@@ -163,7 +166,7 @@ export default function AuctionOffProduct(props) {
             clockwise: clockwiseBtn,
             startPrice_cent: drand * 100,
             // minPrice_cent: (flower.minprice,
-            minPrice_cent: Math.round((drand*75)),  // DEBUG TODO
+            minPrice_cent: Math.round((drand * 75)),  // DEBUG, TODO
             speed_ms: 20,
             tailSize: 10
         })
@@ -172,19 +175,21 @@ export default function AuctionOffProduct(props) {
 
         switch (state) {
             case clockStates.START:
+                setclockwiseBtn(false)
                 console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
                 setRunning(true);
                 break;
             case clockStates.UP:
-                console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
                 setclockwiseBtn(true)
+                console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
                 setRunning(true);
                 break;
             case clockStates.STOP:
+                setclockwiseBtn(false)
                 console.log("Automa da STATO: ", state, ' --> ', clockStates.CANCELLED)
                 setClkState(clockStates.CANCELLED)
                 setDisplayState(clockStates.CANCELLED)
@@ -209,11 +214,36 @@ export default function AuctionOffProduct(props) {
                 break;
         }
     }
+    const [state, setState] = React.useState({
+        flowerCode: "",
+        flowerDescr: "",
+        supplierCode: "",
+        supplierDescr: "",
+        minpriceedit: "",
+        minpricedel: "",
+        imageurl:""
+    })
 
+    /* YOU CAN'T DO THIS: 
+       <button onClick={removeBill(index)}>𝗫</button>
+       because the expression inside onClick is going to be executed on mount.This is going to delete all the bills in the list, as soon as the app is started.
+    
+       Instead, this is what YOU NEED TO DO, using arrow functions:
+       <button onClick={() => removeBill(index)}>𝗫</button>
+     */
     const onChangeHandler = (event) => {
-        console.log('onchangehandler', event)
-        localStorage.setItem("CLOCK_START_PRODUCT", flower)
+        console.log('onchangehandler', event.target)
+
+        localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(state))
         localStorage.setItem("CLOCK_START_SUPPLIER", supplier)
+        const { id, value } = event.target
+        setState(prevState => ({
+            ...prevState,
+            [id]: value
+        }))
+        // setState(state.supplierDescr, supplier.legalname)
+        // setState(state.imageurl, imgURI)
+        setDisplayGDD(event.target.id === "minpriceedit")
     }
 
     // onKeyDown(event) {
@@ -241,7 +271,11 @@ export default function AuctionOffProduct(props) {
                         </div>
 
                         <div >
-                            <span className="block text-lg font-bold ml-1">
+                            <span
+                                id="supplierDescr"
+                                className="block text-lg font-bold ml-1"
+                                onChange={(e) => onChangeHandler(e)}
+                            >
                                 {supplier.legalname}
                             </span>
                             <span className="block text-base ml-0">
@@ -253,27 +287,37 @@ export default function AuctionOffProduct(props) {
                     <div className="" >
                         <TextField className="text-3xl font-bold mb-3"
                             required
-                            id="standard-required"
+                            id="flowerDescr"
                             label="Required"
                             // defaultValue="Flower name"
-                            value={flower.descr}
-                            onChange={onChangeHandler}
+                            value={state.flowerDescr}
+                            onChange={(e) => onChangeHandler(e)}
                         />
                         <div className="text-xl font-bold mb-2">
-                            Code: {flower.code}
+                            <label htmlFor="code" className="text-lg">Code</label>
+                            <input type="text"
+                                id="flowerCode"
+                                // placeholder={flower.code}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                                aria-describedby="flowerCodeHelp"
+                                value={state.flowerCode}
+                                onChange={(e) => onChangeHandler(e)}
+                            />
                         </div>
                     </div>
                 </div>
                 {/* <div className="max-w-screen-xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between"> */}
                 <div className="flex max-w-sm mx-auto mt-8 pr-2">
 
-                    <div className="inline-block rounded-xl shadow-lg ml-2 py-2 px-2 ">
+                    <div className="inline-block rounded-xl ml-2 py-2 px-2 ">
                         {/* <img classNames="h-10" src={"https://upload.wikimedia.org/wikipedia/commons/7/76/Magnolia_liliiflora3.jpg"} alt={flower.descr} /> */}
-                        <img className="sm:w-64 w-56" src={imgURI} alt={flower.descr} />
+                        {/* <img className="sm:w-64 w-56" src={imgURI} alt={flower.descr} /> */}
+                        <img className="sm:w-64 w-56 object-cover" src={imgURI} alt={flower.descr} />
                     </div>
 
-                    {running && clkState === clockStates.STOP && <StartAuction2 clockParams={clockParams}/>}
+                    {running && clkState === clockStates.STOP && <StartAuction2 clockParams={clockParams} />}
                     {!running && clkState === clockStates.CANCELLED && <StopAuction rand={drand} clkState={clkState} />}
+                    {!running && displayGDD && <DisplayGDD state={state} />}
                     {!running &&
                         <div className="">
                             <div className="inline-block font-bold  m-1 ">
@@ -281,9 +325,19 @@ export default function AuctionOffProduct(props) {
                                 <span className="text-2xl w-4 m-1 h-4">{flower.minprice}</span>
                                 <button
                                     type="button"
-                                    className="bg-blue-300 hover:bg-blue-400 text-blue font-bold py-3 align-text-top ml-1 px-3 rounded-full"
+                                    id="minpriceedit"
+                                    className="bg-blue-300 hover:bg-blue-400 text-blue font-bold py-2 align-text-top ml-1 px-2 rounded-full"
                                     aria-label="edit"
-                                    onClick={() => onChangeHandler("EDIT Action Service Called")}
+                                    onClick={(e) => onChangeHandler(e)}
+                                >
+                                    <span aria-hidden="true"></span>
+                                </button>
+                                <button
+                                    type="button"
+                                    id="minpricedel"
+                                    className="inline-block bg-red-400 hover:bg-red-500 text-black font-bold py-2 align-text-top ml-1 px-2 rounded-full"
+                                    aria-label="close"
+                                    onClick={(e) => onChangeHandler(e)}
                                 >
                                     <span aria-hidden="true"></span>
                                 </button>

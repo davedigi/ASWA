@@ -13,6 +13,7 @@ export default class Timer extends React.Component {
     if (this.props.loop && this.state.tickk < 1) {
       console.log('arrivato a zero')
       start = 1000
+      return null
     } else {
       start = this.state.tickk
     }
