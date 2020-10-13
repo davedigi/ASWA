@@ -23,8 +23,10 @@ export default function ASWADashboard() {
         { "supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' } },
         {
             "product": {
+                id:1,
                 code: "G127",
-                descr: "Gerbere Milanesi 90%",
+                descr: "Gerbere Milanesi ",
+                size:"gambo lungo",
                 // imageurl:"assets/products/gerbere-milanesi.jpg",
                 imageurl:"/gerbere-milanesi.jpg",
                 minprice: 1020,

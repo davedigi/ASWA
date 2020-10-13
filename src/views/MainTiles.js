@@ -45,9 +45,10 @@ function MainTiles(props) {
                 </P>
                 <div className="flex   md:pl-12 ">
                     <img src={logo} alt="logo" className="App-logo" />
-                    <a href="/#" className="bg-black text-white font-bold text-xl p-4">
+                    {/* <a href="/#" className="bg-black text-white font-bold text-xl p-4">
                         <span className="timer-font"><Timer loop={true} /></span>
-                    </a>
+                    </a> */}
+                    <img src="http://localhost:9090" alt="mirror"/>
                 </div>
                     <div className="my-blockquote">Web Human Experience</div>
             <h3>{props.title}</h3>

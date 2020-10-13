@@ -5,10 +5,12 @@ import {
    APP_API_WATCH_URL, APP_API_URL, APP_API_PORT
 } from '../../../Hooks/apiContants';
 import Timer from '../Timer100'
+import { IClockStates, clockStates } from "./TypesAuction"
 
 function startAuctionService2(params) {
-
+   
    console.log("partenza orologio con params=", params)
+
    /*    const payload = {
          "clockwise": false,
          "startPrice_cent": 2055,
@@ -65,8 +67,8 @@ export const StartAuction2 = (props) => {
    return (
       <div>
          <span>START OROLOGIO! </span>
-         <span className="block">GIRI DI PARTENZA: {props.spin} </span>
-         <div className="timer-font mt-2"><Timer spin={props.spin} loop={false} /></div>
+         <span className="block">GIRI DI PARTENZA: {props.clockParams.spin} </span>
+         <div className="timer-font mt-2"><Timer spin={props.clockParams.spin} loop={false} /></div>
       </div>
    )
 }

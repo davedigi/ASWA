@@ -14,6 +14,7 @@ export const typeProduct={
 export const clockStates = {
    IDLE: "IDLE",
    UP: "UP",
+   DOWN: "DOWN",
    START: "START",
    STOP: "STOP",
    COMPLETED: "WIN",

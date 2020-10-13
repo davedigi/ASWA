@@ -5,6 +5,7 @@ export default class Timer extends React.Component {
   constructor(props) {
     super(props);
     this.state = { tickk: props.spin*100 }; // suggested 1000
+    console.log('partenza timer con:',props.spin)
   }
 
   tick() {
@@ -23,7 +24,7 @@ export default class Timer extends React.Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(this.props.loop), 40);
+    this.interval = setInterval(() => this.tick(this.props.loop), 28);
   }
 
   componentWillUnmount() {
@@ -35,7 +36,7 @@ export default class Timer extends React.Component {
       <>
         {/* <div>             */}
         {/* <h1 className="text-2xl font-bold mb-3"> */}
-        {this.state.tickk / 100}
+        {(this.state.tickk / 100).toFixed(1)}
         {/* </h1> */}
         {/* </div> */}
       </>

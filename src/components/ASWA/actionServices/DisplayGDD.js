@@ -7,7 +7,7 @@ import {
 
 function displayGDDService(params) {
 
-   console.log("partenza orologio con params=", params)
+   console.log("display orologio con params=", params)
    /*    const payload = {
          "Product": "gerbere milanesi",
          "Producer": "Floreal Garofalo",
@@ -72,9 +72,9 @@ export const DisplayGDD = (props) => {
    displayGDDService(props)
    return (
       <div>
-         <span>DISPLAY OROLOGIO! </span>
+         {/* <span>DISPLAY OROLOGIO! </span>
          <span className="block">Product: {props.state.flowerDescr} </span>
-         <span className="block">Supplier: {props.state.supplierCode} </span>
+         <span className="block">Supplier: {props.state.supplierCode} </span> */}
       </div>
    )
 }

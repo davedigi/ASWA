@@ -3,6 +3,7 @@ export const APP_BASE_URL = "http://localhost"
 export const APP_API_URL = "http://localhost"
 export const APP_API_PORT = 4000
 export const APP_API_WATCH_URL = "http://localhost"
+// export const APP_API_WATCH_URL = "10.100.1.100"
 export const APP_API_WATCH_PORT = 5000
 export const ACCESS_TOKEN_NAME = "login_access_token"
 export const APP_TITLE = "Auction Sales Web App"

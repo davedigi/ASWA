@@ -8,8 +8,8 @@ import TextField from "@material-ui/core/TextField"
 import { IClockStates, clockStates } from "./actionServices/TypesAuction"
 import StartAuction2 from './actionServices/StartAuction2'
 import StopAuction from './actionServices/StopAuction'
+import DownAuction from './actionServices/DownAuction'
 import DisplayGDD from './actionServices/DisplayGDD'
-
 
 // start css --- TODO: parametrizzare con TailwindCSS
 const MaxiButtonASWA = withStyles((theme) => ({
@@ -78,7 +78,6 @@ export default function AuctionOffProduct(props) {
     const [clkState, setClkState] = useState(clockStates.IDLE)
     const [displayState, setDisplayState] = useState(clockStates.START)
     const [displayGDD, setDisplayGDD] = useState(false)
-    const [drand, setDrand] = useState(0)
     const [clockwiseBtn, setclockwiseBtn] = useState(false)
     const [clockParams, setClockParams] = useState({})
 
@@ -101,52 +100,24 @@ export default function AuctionOffProduct(props) {
     // console.log("------------->", flower.code, flower.imageurl)
     // let str = "../../" + flower.imageurl
     const imgURI = flower.imageurl
-    // console.log(imgURI)
+    const fldescr = flower.descr + ' ' + flower.size
 
+    const [state, setState] = React.useState({
+        flowerCode: flower.code,
+        flowerDescr: fldescr,
+        supplierCode: supplier.id,
+        supplierDescr: supplier.legalname,
+        minpriceedit: false,
+        minpricedel: false,
+        imageurl: imgURI
+    })
     useEffect(() => {
 
         localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(flower))
         localStorage.setItem("CLOCK_START_SUPPLIER", JSON.stringify(supplier))
 
-        console.log("USEFFECT Automa da STATO:", clkState)
+        console.log("USEFFECT per localStorage")
 
-        switch (clkState) {
-            case clockStates.START:
-                console.log('USEFFECT --> stato=', clockStates.STOP)
-                setClkState(clockStates.STOP)
-                setDisplayState(clockStates.STOP)
-                setRunning(true);
-                break;
-            case clockStates.UP:
-                console.log('USEFFECT --> stato=', clockStates.STOP)
-                setClkState(clockStates.STOP)
-                setDisplayState(clockStates.STOP)
-                setRunning(true);
-                break;
-            case clockStates.STOP:
-                console.log('USEFFECT --> stato=', clockStates.CANCELLED)
-                setClkState(clockStates.CANCELLED)
-                setDisplayState(clockStates.CANCELLED)
-                setRunning(false);
-                break;
-            case clockStates.CANCELLED:
-                console.log('USEFFECT --> stato=', clockStates.IDLE)
-                setClkState(clockStates.IDLE)
-                setDisplayState(clockStates.CANCELLED)
-                setRunning(false);
-                break;
-            case clockStates.IDLE:
-                console.log('USEFFECT --> stato=', clockStates.START)
-                setClkState(clockStates.START)
-                setDisplayState(clockStates.START)
-                setRunning(false);
-                break;
-            default:
-                setClkState(clockStates.IDLE)
-                setDisplayState('ERROR')
-                setRunning(false);
-                break;
-        }
         // const timer = setInterval(() => {
         //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
         // }, 1800);
@@ -155,57 +126,52 @@ export default function AuctionOffProduct(props) {
         // };
     }, []);
 
-    function handleClick(state, step, msg) {
+    const handleClick = ((mystate, step, msg) => {
         console.log("handleClick", msg)
-        const rand = 1 + Math.random() * (60);
-        setDrand(Math.round(rand));
+        // const rand = 1 + Math.random() * (60)
+        const rand = 30 // DEBUG TODO
 
-        setClockParams({
-            clkState: clkState,
-            spin: drand,
-            clockwise: clockwiseBtn,
-            startPrice_cent: drand * 100,
-            // minPrice_cent: (flower.minprice,
-            minPrice_cent: Math.round((drand * 75)),  // DEBUG, TODO
-            speed_ms: 20,
-            tailSize: 10
-        })
-
-        console.log("setClockParams=", clockParams)
-
-        switch (state) {
-            case clockStates.START:
-                setclockwiseBtn(false)
-                console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
+        switch (mystate) {
+            case clockStates.IDLE:
+                console.log("Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
                 setRunning(true);
                 break;
+            case clockStates.START:
+                if (clockParams.spin) {
+                    console.log("Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
+                    setClkState(clockStates.STOP)
+                    setDisplayState(clockStates.STOP)
+                    setRunning(true);
+                }
+                setclockwiseBtn(false)
+                break;
             case clockStates.UP:
                 setclockwiseBtn(true)
-                console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
+                console.log("Automa da STATO: ", mystate, ' --> ', clockStates.DOWN)
+                setClkState(clockStates.DOWN)
+                setDisplayState(clockStates.DOWN)
+                setRunning(true);
+                break;
+            case clockStates.DOWN:
+                console.log("Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
                 setRunning(true);
                 break;
             case clockStates.STOP:
-                setclockwiseBtn(false)
-                console.log("Automa da STATO: ", state, ' --> ', clockStates.CANCELLED)
+                console.log("Automa da STATO: ", mystate, ' --> ', clockStates.CANCELLED)
                 setClkState(clockStates.CANCELLED)
                 setDisplayState(clockStates.CANCELLED)
                 setRunning(false);
                 break;
             case clockStates.CANCELLED:
-                console.log("Automa da STATO: ", state, ' --> ', clockStates.IDLE)
+                setclockwiseBtn(false)
+                console.log("Automa da STATO: ", mystate, ' --> ', clockStates.IDLE)
                 setClkState(clockStates.IDLE)
                 setDisplayState(clockStates.START)
                 setRunning(false);
-                break;
-            case clockStates.IDLE:
-                console.log("Automa da STATO: ", state, ' --> ', clockStates.STOP)
-                setClkState(clockStates.STOP)
-                setDisplayState(clockStates.STOP)
-                setRunning(true);
                 break;
             default:
                 setClkState(clockStates.IDLE)
@@ -213,16 +179,20 @@ export default function AuctionOffProduct(props) {
                 setRunning(false);
                 break;
         }
-    }
-    const [state, setState] = React.useState({
-        flowerCode: "",
-        flowerDescr: "",
-        supplierCode: "",
-        supplierDescr: "",
-        minpriceedit: "",
-        minpricedel: "",
-        imageurl:""
+        setClockParams({
+            clkState: clkState,
+            spin: rand,
+            clockwise: clockwiseBtn,
+            startPrice_cent: rand * 100,
+            // minPrice_cent: (flower.minprice,
+            minPrice_cent: Math.round((rand * 65)),  // DEBUG, TODO
+            speed_ms: 20,
+            tailSize: 10
+        })
+
+        console.log("setClockParams=", clockParams)
     })
+
 
     /* YOU CAN'T DO THIS: 
        <button onClick={removeBill(index)}>𝗫</button>
@@ -232,7 +202,7 @@ export default function AuctionOffProduct(props) {
        <button onClick={() => removeBill(index)}>𝗫</button>
      */
     const onChangeHandler = (event) => {
-        console.log('onchangehandler', event.target)
+        console.log("trap event.target.id onChangeHandler=", event.target.id)
 
         localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(state))
         localStorage.setItem("CLOCK_START_SUPPLIER", supplier)
@@ -243,7 +213,12 @@ export default function AuctionOffProduct(props) {
         }))
         // setState(state.supplierDescr, supplier.legalname)
         // setState(state.imageurl, imgURI)
-        setDisplayGDD(event.target.id === "minpriceedit")
+        if (event.target.id === "minpriceedit") {
+            setDisplayGDD(true)
+        }
+        else {
+            setDisplayGDD(false)
+        }
     }
 
     // onKeyDown(event) {
@@ -258,19 +233,19 @@ export default function AuctionOffProduct(props) {
     //         event.target.value = '';
     //     }
     // }
-
+    const imgsup = "https://randomuser.me/api/portraits/women/" + clockParams.spin + ".jpg"
     return (
-        <div className="flex-column w-50 min-w-0 max-w-2xl text-gray-700 text-center bg-green-300 px-4 py-2 m-2  rounded-lg overflow-hidden shadow-lg">
+        <div className="flex-column min-w-sm max-w-xl text-gray-700 text-center bg-green-300 px-4 py-2 m-2  rounded-lg overflow-hidden shadow-lg">
             <form>
                 <div className="flex">
-                    <div className="flex space-x-4 mr-20">
+                    <div className="flex space-x-4 mr-10 ">
 
                         <div className="relative w-16 h-16">
-                            <img className="rounded-full border border-gray-100 shadow-sm" src="https://randomuser.me/api/portraits/women/81.jpg" alt="supplier" />
+                            <img className="rounded-full border border-gray-100 shadow-sm" src={imgsup} alt="supplier" />
                             <div className="absolute top-0 right-0 h-4 w-4 my-1 border-2 border-white rounded-full bg-green-400 z-2"></div>
                         </div>
 
-                        <div >
+                        <div className="md:w-40" >
                             <span
                                 id="supplierDescr"
                                 className="block text-lg font-bold ml-1"
@@ -283,24 +258,32 @@ export default function AuctionOffProduct(props) {
                             </span>
                         </div>
                     </div>
-                    <div></div>
-                    <div className="" >
+                    {/* <div className="w-10"></div> */}
+                    <div className=" max-w-sm min-w-full " >
                         <TextField className="text-3xl font-bold mb-3"
-                            required
-                            id="flowerDescr"
-                            label="Required"
+                            helperText="F2 help"
+                            fullWidth
+                            // margin="normal"
+                            // InputLabelProps={{
+                            //     shrink: true,
+                            // }}
+
+                            // required
+                            // label="Required"
                             // defaultValue="Flower name"
-                            value={state.flowerDescr}
+                            id="flowerDescr"
+                            value={state.flowerDescr || 'xxxxx'}
                             onChange={(e) => onChangeHandler(e)}
                         />
-                        <div className="text-xl font-bold mb-2">
-                            <label htmlFor="code" className="text-lg">Code</label>
+                        <div className="flex justify-start align-bottom text-xl font-bold mb-2">
+                            <span className="h-5 text-lg align-text-bottom ">Code:
+                                </span>
                             <input type="text"
                                 id="flowerCode"
                                 // placeholder={flower.code}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                                className="shadow appearance-none border rounded w-20 py-1 px-2 text-gray-700 m-1 leading-4 focus:outline-none focus:shadow-outline"
                                 aria-describedby="flowerCodeHelp"
-                                value={state.flowerCode}
+                                value={state.flowerCode || 'xxxx'}
                                 onChange={(e) => onChangeHandler(e)}
                             />
                         </div>
@@ -314,10 +297,30 @@ export default function AuctionOffProduct(props) {
                         {/* <img className="sm:w-64 w-56" src={imgURI} alt={flower.descr} /> */}
                         <img className="sm:w-64 w-56 object-cover" src={imgURI} alt={flower.descr} />
                     </div>
-
-                    {running && clkState === clockStates.STOP && <StartAuction2 clockParams={clockParams} />}
-                    {!running && clkState === clockStates.CANCELLED && <StopAuction rand={drand} clkState={clkState} />}
-                    {!running && displayGDD && <DisplayGDD state={state} />}
+                    <div>test={(clockwiseBtn) ? 'true' : 'false'}</div>
+                    {running
+                        && ((clkState === clockStates.STOP))
+                        && (!clockwiseBtn)
+                        && <StartAuction2 clockParams={clockParams} />
+                    }
+                    {running
+                        && ((clkState === clockStates.DOWN))
+                        && (clockwiseBtn)
+                        && <StartAuction2 clockParams={clockParams} />
+                    }
+                    {running
+                        && (clkState === clockStates.STOP)
+                        && (clockwiseBtn)
+                        && <DownAuction clockParams={clockParams} />
+                    }
+                    {!running
+                        && clkState === clockStates.CANCELLED
+                        && <StopAuction clkState={clkState} />
+                    }
+                    {!running
+                        && displayGDD
+                        && <DisplayGDD state={state} />
+                    }
                     {!running &&
                         <div className="">
                             <div className="inline-block font-bold  m-1 ">
@@ -349,7 +352,7 @@ export default function AuctionOffProduct(props) {
                             </div>
                             <div className="font-bold text-xl mt-4 ">
                                 <span className="mr-2">Spin</span>
-                                <select><option>{drand}</option></select>
+                                <select><option>{clockParams.spin}</option></select>
                             </div>
                         </div>
                     }
@@ -371,7 +374,7 @@ export default function AuctionOffProduct(props) {
                         endIcon={<AvTimerIcon
                             style={{ fontSize: 50 }}>send
                       </AvTimerIcon>}
-                        onClick={() => handleClick((clkState), 1, 'START/STOP click Action Called')}>
+                        onClick={() => handleClick((clkState), 1, 'START/STOP/DOWN click Action Called')}>
                         {displayState}
                     </MaxiButtonASWA>
                 </div>
