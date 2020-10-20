@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import {
-   ACCESS_TOKEN_NAME, PROC_API_PDD_START, APP_API_WATCH_PORT,
-   APP_API_WATCH_URL, APP_API_URL, APP_API_PORT
+   ACCESS_TOKEN_NAME, PROC_API_PDD_START, APP_API_CLOCK_PORT,
+   APP_API_CLOCK_URL, APP_API_URL, APP_API_PORT
 } from '../../../Hooks/apiContants';
 
 function displayGDDService(params) {
 
-   console.log("display orologio con params=", params)
+   console.log("[DISPLAY GDD] Display orologio con params=", params)
    /*    const payload = {
          "Product": "gerbere milanesi",
          "Producer": "Floreal Garofalo",
@@ -35,13 +35,13 @@ function displayGDDService(params) {
             //    'successMessage': 'START successful. '
             // }))
             localStorage.setItem("CLOCK_START_GDD", JSON.stringify(payload));
-            console.log("display backend response ok", params)
+            console.log("[BACKEND] display backend response ok", params)
          }
          else if (response.code === 204) {
-            console.log("application error 204");
+            console.log("[BACKEND] ERROR application error 204");
          }
          else {
-            console.log("problems encountered");
+            console.log("[BACKEND] ERROR problems encountered");
          }
       })
       .catch(function (error) {
@@ -50,23 +50,22 @@ function displayGDDService(params) {
             // that falls out of the range of 2xx
             const message = error.response.data.message
 
-            console.log('err message from direct digital watch=', message);
+            console.log('[BACKEND] ERROR message from direct digital watch=', message);
 
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            // console.log(error.response.status);
+            // console.log(error.response.headers);
             return <span>{message}</span>
          } else if (error.request) {
-            console.log("The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js:", error.request);
+            console.log("[BACKEND] ERROR The request was made but no response was received. `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js:", error.request);
          } else {
-            console.log('Something happened in setting up the request that triggered an Error:', error.message);
+            console.log('[BACKEND] ERROR Something happened in setting up the request that triggered an Error:', error.message);
          }
          // console.log(error.config);
          // console.log(error.toJSON());
-         console.log("CATCH error in axios.post direct digital watch, No internet connection found? Peraphs App is running in offline mode.", error)
+         console.log("[BACKEND] CATCH ERROR in axios.post direct digital watch, No internet connection found? Peraphs App is running in offline mode.", error)
          return <span>{error.message}</span>
       });
 }
-
 
 export const DisplayGDD = (props) => {
    displayGDDService(props)

@@ -12,11 +12,11 @@ function StopAuctionService() {
             //    'successMessage': 'STOP successful. '
             // }))
             // localStorage.setItem('WATCH_RESPONSE', response.data)
-            console.log('stop ok e API get working and return data:', res.data )
+            // console.log('stop ok e API get working and return data:', res.data )
          } else if (res.code === 204) {
             console.log('application error 204')
          } else {
-            console.log('problems encountered')
+            console.log('problems encountered? status:', res.status)
          }
       })
       .catch(function (error) {

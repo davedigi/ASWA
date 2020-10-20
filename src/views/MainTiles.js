@@ -1,19 +1,17 @@
-import React from 'react'
+import React from 'react';
 import { withRouter } from 'react-router-dom';
+import logo from "../logo.svg"
+// eslint-disable-next-line no-unused-vars
+import ModalDialog from '../components/shared/ModelDialog';
 /* import useCrud from '../Hooks/useCrud';
 import userReducer from '../context/UserReducer';
 import userContext from '../context/UserContext';
 import { ADD_USER } from '../context/types'; */
 /*
-import { MyPaper } from '../components/shared/Paper'; // custom Paper 
+import { MyPaper } from '../components/shared/Paper'; // custom Paper
 import { MyTitle } from '../components/shared/Title'; // custom Title
 */
-import {P,H2} from '../components/shared/SharedStyleComponents'
-import Timer from '../components/ASWA/Timer100';
-import logo from "../logo.svg"
-
-
-
+import { H2, P } from '../components/shared/SharedStyleComponents';
 
 function MainTiles(props) {
 /*     const users = useCrud("http://jsonplaceholder.typicode.com/users")
@@ -36,19 +34,19 @@ function MainTiles(props) {
 
 
     return (
-        <div className="w-full max-w-4xl mx-auto ml-4  ">
-            <div className="bg-green-200 text-gray-800 shadow-md rounded p-8 mx-auto">
-                <h1 className='text-2xl font-bold text-center font-display tracking-wider'>About ASWA</h1>
+        <div className="w-full max-w-4xl mx-auto ml-4 ">
+            <div className="p-8 mx-auto text-gray-800 bg-green-200 rounded shadow-md">
+                <h1 className='text-2xl font-bold tracking-wider text-center font-display'>About ASWA</h1>
                 <H2>What is it</H2>
                 <P>
                     <i>ASWA</i> is a online Auction Sales Web App inspired to <b>Sintel Van der Hoorn</b>
                 </P>
-                <div className="flex   md:pl-12 ">
+                <div className="flex md:pl-12 ">
                     <img src={logo} alt="logo" className="App-logo" />
-                    {/* <a href="/#" className="bg-black text-white font-bold text-xl p-4">
+                    {/* <a href="/#" className="p-4 text-xl font-bold text-white bg-black">
                         <span className="timer-font"><Timer loop={true} /></span>
                     </a> */}
-                    <img src="http://localhost:9090" alt="mirror"/>
+                    <img className="max-w-sm" src="http://localhost:9090" alt="mirror"/>
                 </div>
                     <div className="my-blockquote">Web Human Experience</div>
             <h3>{props.title}</h3>
@@ -81,6 +79,7 @@ function MainTiles(props) {
         </div >
         {/* <ListUsers /> */ }
     {/* <ListProductsTable /> */ }
+    {/* <WinnerAuction /> */}
         </div >
     )
 }
