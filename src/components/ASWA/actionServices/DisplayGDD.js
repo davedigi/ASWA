@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import {
-   ACCESS_TOKEN_NAME, PROC_API_PDD_START, APP_API_CLOCK_PORT,
-   APP_API_CLOCK_URL, APP_API_URL, APP_API_PORT
-} from '../../../Hooks/apiContants';
+import { APP_API_URL, APP_API_PORT } from '../../../Hooks/apiContants';
 
 function displayGDDService(params) {
 
@@ -25,7 +22,8 @@ function displayGDDService(params) {
       payload.Producer = "Floreal Garofalo"
 
    if (!payload.Image_url)
-      payload.Image_url = "http://localhost:3000/gerbere-milanesi.jpg"
+      // payload.Image_url = "http://localhost:3000/gerbere-milanesi.jpg"
+      payload.Image_url = "http://10.100.1.109/gerbere-milanesi.jpg"
 
    axios.post(APP_API_URL + ':' + APP_API_PORT + '/display', payload, { headers })
       .then(function (response) {
@@ -50,7 +48,7 @@ function displayGDDService(params) {
             // that falls out of the range of 2xx
             const message = error.response.data.message
 
-            console.log('[BACKEND] ERROR message from direct digital watch=', message);
+            console.log('[BACKEND] ERROR message from direct digital clock=', message);
 
             // console.log(error.response.status);
             // console.log(error.response.headers);
@@ -62,7 +60,7 @@ function displayGDDService(params) {
          }
          // console.log(error.config);
          // console.log(error.toJSON());
-         console.log("[BACKEND] CATCH ERROR in axios.post direct digital watch, No internet connection found? Peraphs App is running in offline mode.", error)
+         console.log("[BACKEND] CATCH ERROR in axios.post direct digital clock, No internet connection found? Peraphs App is running in offline mode.", error)
          return <span>{error.message}</span>
       });
 }

@@ -25,7 +25,7 @@ export interface IClockStates {
    Label?: string;
    State: clockStates;
 }
-// class Demo extends React.Component<IWatchStates> {}
+// class Demo extends React.Component<IclockStates> {}
 // let d = <Demo State={State.START} />
 
 // clock default configuration

@@ -10,6 +10,8 @@ import StartAuction2 from './actionServices/StartAuction2'
 import StopAuction from './actionServices/StopAuction'
 import DownAuction from './actionServices/DownAuction'
 import DisplayGDD from './actionServices/DisplayGDD'
+import { H2 } from '../shared/SharedStyleComponents';
+
 
 // start css --- TODO: parametrizzare con TailwindCSS
 const MaxiButtonASWA = withStyles((theme) => ({
@@ -80,10 +82,22 @@ export default function AuctionOffProduct(props) {
     const [displayGDD, setDisplayGDD] = useState(false)
     const [clockwiseBtn, setclockwiseBtn] = useState(false)
     const [clockParams, setClockParams] = useState({})
+    const [errorMessage, setErrorMessage] = useState(null)
 
     /*     const [preparedItem, setPreparedItem] = React.useState([     
             {"supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' }},
-            {"product": { code: "G127", descr: "Droogbloemen bewerkt H%" }},
+            {
+            "product": {
+                id: 1,
+                code: "G127",
+                descr: "Gerbere Milanesi ",
+                size: "gambo lungo",
+                // imageurl:"assets/products/gerbere-milanesi.jpg",
+                imageurl: "/gerbere-milanesi.jpg",
+                minprice: 1020,
+                suggestedprice: 1267
+            }
+        },
         ]) */
     const arr = Object.entries(props.preparedItem);
     // console.log('[AUCTIONOFF] preparedItem arr in entrata=', arr)
@@ -111,8 +125,8 @@ export default function AuctionOffProduct(props) {
         minpricedel: false,
         imageurl: imgURI
     })
-    useEffect(() => {
 
+    useEffect(() => {
         localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(flower))
         localStorage.setItem("CLOCK_START_SUPPLIER", JSON.stringify(supplier))
 
@@ -126,8 +140,21 @@ export default function AuctionOffProduct(props) {
         // };
     }, []);
 
+    // CLOCK ERROR HANDLE
+    useEffect(() => {
+        console.info("[AUCTIONOFF] USEEFFECT per setRunnig a ")
+        if (errorMessage) {
+            setRunning(false)
+            console.info("false")
+            setClkState(clockStates.CANCELLED)
+        } else {
+            console.info("true")
+        }
+
+    }, [errorMessage, clkState])
+
     const handleClick = ((mystate, step, msg) => {
-        console.log("[AUCTIONOFF][handleClick]",mystate, msg)
+        console.log("[AUCTIONOFF][handleClick]", mystate, msg)
         // const rand = 1 + Math.random() * (60)
         const rand = 30 // DEBUG TODO
 
@@ -135,38 +162,46 @@ export default function AuctionOffProduct(props) {
             case clockStates.IDLE:
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
+                setErrorMessage(null)
                 setDisplayState(clockStates.STOP)
                 setRunning(true);
                 break;
             case clockStates.START:
                 if (clockParams.spin) {
+                    setErrorMessage(null)
                     console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                     setClkState(clockStates.STOP)
                     setDisplayState(clockStates.STOP)
+                    setDisplayGDD(false)
                     setRunning(true);
                 }
                 setclockwiseBtn(false)
                 break;
             case clockStates.UP:
+                setErrorMessage(null)
                 setclockwiseBtn(true)
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.DOWN)
                 setClkState(clockStates.DOWN)
                 setDisplayState(clockStates.DOWN)
+                setDisplayGDD(false)
                 setRunning(true);
                 break;
             case clockStates.DOWN:
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
+                setDisplayGDD(false)
                 setRunning(true);
                 break;
             case clockStates.STOP:
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.CANCELLED)
                 setClkState(clockStates.CANCELLED)
                 setDisplayState(clockStates.CANCELLED)
+                setDisplayGDD(false)
                 setRunning(false);
                 break;
             case clockStates.CANCELLED:
+                setErrorMessage(null)
                 setclockwiseBtn(false)
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.IDLE)
                 setClkState(clockStates.IDLE)
@@ -304,30 +339,49 @@ export default function AuctionOffProduct(props) {
                         {/* <img classNames="h-10" src={"https://upload.wikimedia.org/wikipedia/commons/7/76/Magnolia_liliiflora3.jpg"} alt={flower.descr} /> */}
                         {/* <img className="w-56 sm:w-64" src={imgURI} alt={flower.descr} /> */}
                         <img className="object-cover w-56 sm:w-64" src={imgURI} alt={flower.descr} />
-                    <div>test UP={(clockwiseBtn) ? 'true' : 'false'}</div>
+                        <div>test UP={(clockwiseBtn) ? 'true' : 'false'}</div>
                     </div>
                     {running
                         && ((clkState === clockStates.STOP))
                         && (!clockwiseBtn)
-                        && <StartAuction2 onChange={handleClick} clkState={clkState} clockParams={clockParams} />
+                        && <StartAuction2 onChange={handleClick}
+                            clkState={clkState}
+                            clockParams={clockParams}
+                            showError={setErrorMessage}
+                        />
                     }
                     {running
                         && ((clkState === clockStates.DOWN))
                         && (clockwiseBtn)
-                        && <StartAuction2 clockParams={clockParams} />
+                        && <StartAuction2 onChange={handleClick}
+                            clkState={clkState}
+                            clockParams={clockParams}
+                            showError={setErrorMessage}
+                        />
                     }
                     {running
                         && (clkState === clockStates.STOP)
                         && (clockwiseBtn)
-                        && <DownAuction clockParams={clockParams} />
+                        && <DownAuction onChange={handleClick}
+                            clkState={clkState}
+                            clockParams={clockParams}
+                            showError={setErrorMessage}
+                        />
                     }
                     {!running
                         && clkState === clockStates.CANCELLED
-                        && <StopAuction clkState={clkState} />
+                        && <StopAuction onChange={handleClick}
+                            clkState={clkState}
+                            clockParams={clockParams}
+                            showError={setErrorMessage}
+                        />
                     }
                     {!running
                         && displayGDD
-                        && <DisplayGDD state={state} />
+                        && <DisplayGDD state={state}
+                            showError={setErrorMessage}
+                        />
+
                     }
                     {!running &&
                         <div className="">
@@ -365,6 +419,28 @@ export default function AuctionOffProduct(props) {
                         </div>
                     }
                 </div>
+                <div className="fixed z-50 flex hidden overflow-auto bg-gray-700 bg-opacity-75 animated fadeIn pin" >
+                    <div className="fixed relative flex flex-col justify-center justify-end w-full h-auto max-w-md p-2 m-auto align-top rounded shadow shadow-inner animated fadeInUp pin-b pin-x"
+                    >
+                        <h2 className="mt-8 mb-4 text-4xl font-extrabold leading-loose text-center text-black ">The WINNER is</h2>
+                        <div className="mb-8 leading-normal text-center text-black font-2xl">
+                            Buyer<br />
+                            Price
+                        </div>
+                        <div className="inline-flex justify-center">
+                            <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded border-green hover:bg-green-100">
+                                SALE
+                        </button>
+                            <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded border-red hover:bg-red-100">
+                                CANCEL
+                        </button>
+                            <button className="flex-1 px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded md:flex-none border-red hover:bg-red-100">
+                                REBID
+                        </button>
+                        </div >
+
+                    </div >
+                </div >
                 <div>
                     <MidButtonASWA variant="contained" className={classes.button}
                         value={clockwiseBtn}
@@ -372,7 +448,6 @@ export default function AuctionOffProduct(props) {
                             style={{ fontSize: 50 }}>send
                       </RotateRightIcon>}
                         onClick={() => handleClick(clockStates.UP, 1, ' UP click Action called')}
-
                     >
                         UP
                     </MidButtonASWA>
@@ -387,6 +462,14 @@ export default function AuctionOffProduct(props) {
                     </MaxiButtonASWA>
                 </div>
             </form>
+
+            <h1 className="px-6 mb-2 font-black text-red-700 transform bg-gray-500 bg-opacity-75 rounded shadow w-100 modal ">{errorMessage}</h1>
+            {/* <H2 >{errorMessage}</H2> */}
+            {/* close for testing */}
+            {/* <span className="absolute px-4 pt-4 pin-t pin-r" >
+                <svg className="w-6 h-6 text-grey hover:text-gray-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+            </span > */}
+            {/* <h1 className="relative z-10 px-12 py-6 mb-4 font-extrabold text-red-700 bg-gray-500 bg-opacity-75 rounded shadow">{errorMessage}</h1> */}
         </div >
     )
 }

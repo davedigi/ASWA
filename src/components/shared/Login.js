@@ -71,8 +71,8 @@ function Login(props) {
                console.log('err message from backend=', message);
                props.showError(message);
 
-               console.log(error.response.status);
-               console.log(error.response.headers);
+               // console.log(error.response.status);
+               // console.log(error.response.headers);
                return null
             } else if (error.request) {
                // The request was made but no response was received
@@ -83,8 +83,8 @@ function Login(props) {
                // Something happened in setting up the request that triggered an Error
                console.log('Error', error.message);
             }
-            console.log(error.config);
-            console.log(error.toJSON());
+            // console.log(error.config);
+            // console.log(error.toJSON());
             console.log("CATCH error in axios.post", error)
          });
    }

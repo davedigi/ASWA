@@ -4,7 +4,7 @@ import AuctionOffProduct from "../components/ASWA/AuctionOffProduct"
 import Header from "../components/shared/Header"
 import Navbar from '../components/Navbar';
 import WinnerAuction from '../components/ASWA/actionServices/WinnerAuction';
-
+import WebSocketClock from '../Hooks/WebSocketClock' 
 
 export default function ASWADashboard() {
     const menu = React.useState([
@@ -43,7 +43,7 @@ export default function ASWADashboard() {
             {/* <Navbar items={menu}/> */}
             <MenuIcons />
             <AuctionOffProduct preparedItem={preparedItem} />
-
+<WebSocketClock />
             {/* <ASWAFooter /> */}
         </div>
     )

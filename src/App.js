@@ -8,6 +8,7 @@ import Login from './components/shared/Login';
 import logo from "./logo.svg"
 import PrivateRoute from './components/shared/PrivateRoute'
 import AlertComponent from "./components/shared/AlertComponent";
+import ModelDialog from "./components/shared/ModelDialog"
 
 
 const onLogout = async () => {
@@ -85,7 +86,6 @@ function App() {
             </Switch>
             <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage} />
           </div>
-          {/* <span>CICCIO BARICCIO </span> */}
           <Footer />
         </div>
       </Router >
