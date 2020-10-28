@@ -10,8 +10,8 @@ import StartAuction2 from './actionServices/StartAuction2'
 import StopAuction from './actionServices/StopAuction'
 import DownAuction from './actionServices/DownAuction'
 import DisplayGDD from './actionServices/DisplayGDD'
-import { H2 } from '../shared/SharedStyleComponents';
-
+import { H2 } from '../shared/SharedStyleComponents'
+import WebSocketClock from '../../Hooks/WebSocketClock'
 
 // start css --- TODO: parametrizzare con TailwindCSS
 const MaxiButtonASWA = withStyles((theme) => ({
@@ -25,6 +25,7 @@ const MaxiButtonASWA = withStyles((theme) => ({
             backgroundColor: orange[700],
         },
         margin: 10,
+        marginTop:100,
     },
 }))(Button)
 
@@ -39,6 +40,7 @@ const MidButtonASWA = withStyles((theme) => ({
             backgroundColor: red[700],
         },
         margin: 10,
+        marginTop:60,
     },
 }))(Button);
 const useStyles = makeStyles({
@@ -115,6 +117,7 @@ export default function AuctionOffProduct(props) {
     // let str = "../../" + flower.imageurl
     const imgURI = flower.imageurl
     const fldescr = flower.descr + ' ' + flower.size
+
 
     const [state, setState] = React.useState({
         flowerCode: flower.code,
@@ -333,13 +336,18 @@ export default function AuctionOffProduct(props) {
                     </div>
                 </div>
                 {/* <div className="max-w-screen-xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between"> */}
+                <WebSocketClock onChange={handleClick}
+                                clkState={clkState}
+                                clockParams={clockParams}
+                                showError={setErrorMessage}
+                            />
                 <div className="flex max-w-sm pr-2 mx-auto mt-8">
 
                     <div className="inline-block px-2 py-2 ml-2 rounded-xl ">
                         {/* <img classNames="h-10" src={"https://upload.wikimedia.org/wikipedia/commons/7/76/Magnolia_liliiflora3.jpg"} alt={flower.descr} /> */}
                         {/* <img className="w-56 sm:w-64" src={imgURI} alt={flower.descr} /> */}
                         <img className="object-cover w-56 sm:w-64" src={imgURI} alt={flower.descr} />
-                        <div>test UP={(clockwiseBtn) ? 'true' : 'false'}</div>
+                        {/* <div>test UP={(clockwiseBtn) ? 'true' : 'false'}</div> */}
                     </div>
                     {running
                         && ((clkState === clockStates.STOP))
@@ -385,6 +393,7 @@ export default function AuctionOffProduct(props) {
                     }
                     {!running &&
                         <div className="">
+
                             <div className="inline-block m-1 font-bold ">
                                 <span className="text-lg">Min price: €</span>
                                 <span className="w-4 h-4 m-1 text-2xl">{flower.minprice}</span>
@@ -419,28 +428,6 @@ export default function AuctionOffProduct(props) {
                         </div>
                     }
                 </div>
-                <div className="fixed z-50 flex hidden overflow-auto bg-gray-700 bg-opacity-75 animated fadeIn pin" >
-                    <div className="fixed relative flex flex-col justify-center justify-end w-full h-auto max-w-md p-2 m-auto align-top rounded shadow shadow-inner animated fadeInUp pin-b pin-x"
-                    >
-                        <h2 className="mt-8 mb-4 text-4xl font-extrabold leading-loose text-center text-black ">The WINNER is</h2>
-                        <div className="mb-8 leading-normal text-center text-black font-2xl">
-                            Buyer<br />
-                            Price
-                        </div>
-                        <div className="inline-flex justify-center">
-                            <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded border-green hover:bg-green-100">
-                                SALE
-                        </button>
-                            <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded border-red hover:bg-red-100">
-                                CANCEL
-                        </button>
-                            <button className="flex-1 px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded md:flex-none border-red hover:bg-red-100">
-                                REBID
-                        </button>
-                        </div >
-
-                    </div >
-                </div >
                 <div>
                     <MidButtonASWA variant="contained" className={classes.button}
                         value={clockwiseBtn}
@@ -464,6 +451,7 @@ export default function AuctionOffProduct(props) {
             </form>
 
             <h1 className="px-6 mb-2 font-black text-red-700 transform bg-gray-500 bg-opacity-75 rounded shadow w-100 modal ">{errorMessage}</h1>
+
             {/* <H2 >{errorMessage}</H2> */}
             {/* close for testing */}
             {/* <span className="absolute px-4 pt-4 pin-t pin-r" >

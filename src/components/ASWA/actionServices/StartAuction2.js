@@ -3,8 +3,6 @@ import axios from 'axios'
 import { APP_API_URL, APP_API_PORT } from '../../../Hooks/apiContants';
 import Timer from '../Timer100'
 import { IClockStates, clockStates } from "./TypesAuction"
-import AlertComponent from '../../shared/AlertComponent'
-import Sleep from '../../shared/Sleep'
 
 const headers = {
    'Content-Type': 'application/json'
@@ -75,8 +73,10 @@ function startAuctionService2(props) {
 
             localStorage.setItem("CLOCK_START_PARAMS", JSON.stringify(props)); // TODO trasformare con react-redux - DG
             // GO TO RECEIVE THE LAST WINNER
-            if (props.clkState === clockStates.STOP)
-               await getLastWinner(props);
+            if (props.clkState === clockStates.STOP) {
+               // await getLastWinner(props);
+               
+            }
          }
          else if (response.code === 204) {
             console.log("[BACKEND] application error 204");
