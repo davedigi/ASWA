@@ -22,8 +22,8 @@ function displayGDDService(params) {
       payload.Producer = "Floreal Garofalo"
 
    if (!payload.Image_url)
-      // payload.Image_url = "http://localhost:3000/gerbere-milanesi.jpg"
-      payload.Image_url = "http://10.100.1.109/gerbere-milanesi.jpg"
+      payload.Image_url = "http://localhost:3000/gerbere-milanesi.jpg"
+      // payload.Image_url = "http://10.100.1.109/gerbere-milanesi.jpg"
 
    axios.post(APP_API_URL + ':' + APP_API_PORT + '/display', payload, { headers })
       .then(function (response) {

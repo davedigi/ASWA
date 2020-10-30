@@ -1,6 +1,6 @@
 import React from 'react'
 import WinnerAuction from '../components/ASWA/actionServices/WinnerAuction'
-
+import { clockStates } from '../components/ASWA/actionServices/TypesAuction'
 /* This advanced setup simply ensures the WebSocket is always trying to connect
  if the server goes down or if there is network failure, so 
  whenever the server is back up the client is reconnected.
@@ -34,7 +34,7 @@ class WebSocketClock extends React.Component {
 
    constructor(props) {
       super(props)
-      console.log('props del websocket:', props)
+      console.log('[WEBSOCKET] props:', props)
       this.state = {
          ws: null
       }
@@ -49,6 +49,9 @@ class WebSocketClock extends React.Component {
    /**
     * @function connect
     * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
+    * Un end-point WebSocket è rappresentato da URI nel seguente formato:ws://host:port/path?query
+wss://host:port/path?query
+Lo schema ws rappresenta le comunicazioni in chiaro mentre lo schema wss rapresenta le comunicazioni criptate. La porta è un dato facoltativo, si consideri che per le comunicazioni in chiaro si usa la porta 80 mentre per le comunicazione criptate la 443, analogamente al protocollo l’http. La componente path rappresenta il path del server dove si trova l’end-point e la parte query è opzionale.
     */
    connect = () => {
       var ws = new WebSocket("ws://localhost:8080/ws");
@@ -67,11 +70,14 @@ class WebSocketClock extends React.Component {
 
       ws.onmessage = evt => {
          // listen to data sent from the websocket server
-         console.log('[WEBSOCKET] CLIENT json post event!', evt)
+         // console.log('[WEBSOCKET] CLIENT json post event!', evt)
          const message = evt.data
          this.setState({ dataFromServer: message })
          console.log('[WEBSOCKET] CLIENT message=', message)
-         console.log('state.=', this.state)
+         // console.log('state.=', this.state)
+         if (this.props.running) {
+            this.props.onChange(clockStates.COMPLETED, 1, 'WINNER FROM CLOCK Action Called');
+         } else console.log('NIENTE CAMBIO DI STATO perchè this.props.running:',this.props.running)
       }
       // websocket onclose event listener
       ws.onclose = e => {
@@ -107,9 +113,9 @@ class WebSocketClock extends React.Component {
 
    render() {
       return (
+         // this.props.running &&
          <div >
-
-            <WinnerAuction show={this.props.clockParams} websocket={this.state.dataFromServer} />
+            <WinnerAuction onChange={this.props.onChange} websocket={this.state.dataFromServer} />
          </div>
       )
    }

@@ -9,12 +9,7 @@ const headers = {
 };
 
 // TODO handleError() Digital Clock
-function getLastWinner(props) {
-
-   // let msg = 'TORNO con il VINCITORE?'
-   // if (!window.confirm(msg)) {
-   //    return ''
-   // }
+/* function getLastWinner(props) {
 
    axios.get(APP_API_URL + ':' + APP_API_PORT + '/clock/lastwinner', { headers })
       .then((response) => {
@@ -56,7 +51,7 @@ function getLastWinner(props) {
          return clockStates.CANCELLED
       })
 }
-
+ */
 function startAuctionService2(props) {
 
    console.log("START startAuctionService2 with props=", props)
@@ -111,9 +106,7 @@ function startAuctionService2(props) {
 }
 
 export const StartAuction2 = (props) => {
-   console.log("[AUCTIONOFF] Partenza orologio con props=", props)
-   // let msg = 'parto con lo stato ' + props.clkState
-   // alert(msg)
+   // console.log("[AUCTIONOFF] Partenza orologio con props=", props)
    startAuctionService2(props)
    return (
       <div>

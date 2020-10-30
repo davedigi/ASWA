@@ -141,7 +141,7 @@ export default function AuctionOffProduct(props) {
         // return () => {
         //     clearInterval(timer);
         // };
-    }, []);
+    }, [flower, supplier]);
 
     // CLOCK ERROR HANDLE
     useEffect(() => {
@@ -151,10 +151,10 @@ export default function AuctionOffProduct(props) {
             console.info("false")
             setClkState(clockStates.CANCELLED)
         } else {
-            console.info("true")
+            console.info(running)
         }
 
-    }, [errorMessage, clkState])
+    }, [errorMessage])
 
     const handleClick = ((mystate, step, msg) => {
         console.log("[AUCTIONOFF][handleClick]", mystate, msg)
@@ -213,8 +213,8 @@ export default function AuctionOffProduct(props) {
                 break;
             case clockStates.COMPLETED:
                 setclockwiseBtn(false)
-                console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.CANCELLED)
-                setClkState(clockStates.CANCELLED)
+                console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.COMPLETED)
+                setClkState(clockStates.COMPLETED)
                 setDisplayState(clockStates.COMPLETED)
                 setRunning(false);
                 break;
@@ -337,9 +337,10 @@ export default function AuctionOffProduct(props) {
                 </div>
                 {/* <div className="max-w-screen-xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between"> */}
                 <WebSocketClock onChange={handleClick}
-                                clkState={clkState}
-                                clockParams={clockParams}
-                                showError={setErrorMessage}
+                                // clkState={clkState}
+                                // clockParams={clockParams}
+                                // showError={setErrorMessage}
+                                running={running}
                             />
                 <div className="flex max-w-sm pr-2 mx-auto mt-8">
 
