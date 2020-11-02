@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button'
-import { orange, red } from '@material-ui/core/colors'
 import AvTimerIcon from '@material-ui/icons/AvTimer'
 import RotateRightIcon from '@material-ui/icons/RotateRight'
 import TextField from "@material-ui/core/TextField"
@@ -12,45 +9,7 @@ import DownAuction from './actionServices/DownAuction'
 import DisplayGDD from './actionServices/DisplayGDD'
 import { H2 } from '../shared/SharedStyleComponents'
 import WebSocketClock from '../../Hooks/WebSocketClock'
-
-// start css --- TODO: parametrizzare con TailwindCSS
-const MaxiButtonASWA = withStyles((theme) => ({
-    root: {
-        width: 260,
-        height: 120,
-        fontSize: 56,
-        color: theme.palette.getContrastText(orange[500]),
-        backgroundColor: orange[500],
-        '&:hover': {
-            backgroundColor: orange[700],
-        },
-        margin: 10,
-        marginTop:100,
-    },
-}))(Button)
-
-const MidButtonASWA = withStyles((theme) => ({
-    root: {
-        width: 120,
-        height: 80,
-        fontSize: 28,
-        color: theme.palette.getContrastText(red[500]),
-        backgroundColor: red[500],
-        '&:hover': {
-            backgroundColor: red[700],
-        },
-        margin: 10,
-        marginTop:60,
-    },
-}))(Button);
-const useStyles = makeStyles({
-    root: {
-        maxWidth: 345,
-    },
-    media: {
-        height: 140,
-    },
-});
+import { useStyles, MidButtonASWA, MaxiButtonASWA } from '../shared/MaxiButtonASWA';
 
 /* const item = {
     "id": "G127",
@@ -74,7 +33,6 @@ const useStyles = makeStyles({
         }
     }
 } */
-
 
 export default function AuctionOffProduct(props) {
     const classes = useStyles()
@@ -118,7 +76,6 @@ export default function AuctionOffProduct(props) {
     const imgURI = flower.imageurl
     const fldescr = flower.descr + ' ' + flower.size
 
-
     const [state, setState] = React.useState({
         flowerCode: flower.code,
         flowerDescr: fldescr,
@@ -156,8 +113,8 @@ export default function AuctionOffProduct(props) {
 
     }, [errorMessage])
 
-    const handleClick = ((mystate, step, msg) => {
-        console.log("[AUCTIONOFF][handleClick]", mystate, msg)
+    const handleClick = ((mystate, transaction, msg) => {
+        console.log("[AUCTIONOFF][handleClick]", mystate, transaction, msg)
         // const rand = 1 + Math.random() * (60)
         const rand = 30 // DEBUG TODO
 
@@ -204,6 +161,9 @@ export default function AuctionOffProduct(props) {
                 setRunning(false);
                 break;
             case clockStates.CANCELLED:
+                // ClockWinnerState REGISTERED
+                // ClockWinnerState CANCELLED
+
                 setErrorMessage(null)
                 setclockwiseBtn(false)
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.IDLE)
@@ -238,7 +198,6 @@ export default function AuctionOffProduct(props) {
         // console.log("[AUCTIONOFF] setClockParams=", clockParams)
     })
 
-
     /* YOU CAN'T DO THIS: 
        <button onClick={removeBill(index)}>𝗫</button>
        because the expression inside onClick is going to be executed on mount.This is going to delete all the bills in the list, as soon as the app is started.
@@ -248,7 +207,6 @@ export default function AuctionOffProduct(props) {
      */
     const onChangeHandler = (event) => {
         console.log("[AUCTIONOFF] onChangeHandler trap event.target.id onChangeHandler=", event.target.id)
-
         localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(state))
         localStorage.setItem("CLOCK_START_SUPPLIER", supplier)
         const { id, value } = event.target
@@ -258,14 +216,9 @@ export default function AuctionOffProduct(props) {
         }))
         // setState(state.supplierDescr, supplier.legalname)
         // setState(state.imageurl, imgURI)
-        if (event.target.id === "minpriceedit") {
-            setDisplayGDD(true)
-        }
-        else {
-            setDisplayGDD(false)
-        }
+        if (event.target.id === "minpriceedit") setDisplayGDD(true)
+        else setDisplayGDD(false)
     }
-
     // onKeyDown(event) {
     //     if (event.keyCode === RETURN_KEY_CODE) {
     //         let text = event.target.value.trim();
@@ -278,19 +231,16 @@ export default function AuctionOffProduct(props) {
     //         event.target.value = '';
     //     }
     // }
-    const imgsup = "https://randomuser.me/api/portraits/women/" + clockParams.spin + ".jpg"
+    const imgsup = "https://randomuser.me/api/portraits/women/" + (clockParams.spin ? clockParams.spin : 1) + ".jpg"
     return (
         <div className="max-w-xl px-4 py-2 m-2 overflow-hidden text-center text-gray-700 bg-green-300 rounded-lg shadow-lg flex-column min-w-sm">
-
             <form>
                 <div className="flex">
                     <div className="flex mr-10 space-x-4 ">
-
                         <div className="relative w-16 h-16">
                             <img className="border border-gray-100 rounded-full shadow-sm" src={imgsup} alt="supplier" />
                             <div className="absolute top-0 right-0 w-4 h-4 my-1 bg-green-400 border-2 border-white rounded-full z-2"></div>
                         </div>
-
                         <div className="md:w-40" >
                             <span
                                 id="supplierDescr"
@@ -313,7 +263,6 @@ export default function AuctionOffProduct(props) {
                             // InputLabelProps={{
                             //     shrink: true,
                             // }}
-
                             // required
                             // label="Required"
                             // defaultValue="Flower name"
@@ -337,13 +286,12 @@ export default function AuctionOffProduct(props) {
                 </div>
                 {/* <div className="max-w-screen-xl px-4 py-12 mx-auto sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between"> */}
                 <WebSocketClock onChange={handleClick}
-                                // clkState={clkState}
-                                // clockParams={clockParams}
-                                // showError={setErrorMessage}
-                                running={running}
-                            />
+                    clkState={clkState}
+                    // clockParams={clockParams}
+                    // showError={setErrorMessage}
+                    running={running}
+                />
                 <div className="flex max-w-sm pr-2 mx-auto mt-8">
-
                     <div className="inline-block px-2 py-2 ml-2 rounded-xl ">
                         {/* <img classNames="h-10" src={"https://upload.wikimedia.org/wikipedia/commons/7/76/Magnolia_liliiflora3.jpg"} alt={flower.descr} /> */}
                         {/* <img className="w-56 sm:w-64" src={imgURI} alt={flower.descr} /> */}
@@ -379,18 +327,13 @@ export default function AuctionOffProduct(props) {
                     }
                     {!running
                         && clkState === clockStates.CANCELLED
-                        && <StopAuction onChange={handleClick}
-                            clkState={clkState}
-                            clockParams={clockParams}
-                            showError={setErrorMessage}
-                        />
+                        && <StopAuction />
                     }
                     {!running
                         && displayGDD
                         && <DisplayGDD state={state}
                             showError={setErrorMessage}
                         />
-
                     }
                     {!running &&
                         <div className="">
@@ -441,6 +384,7 @@ export default function AuctionOffProduct(props) {
                     </MidButtonASWA>
 
                     <MaxiButtonASWA variant="contained" className={classes.button}
+                        disabled={running}
                         value={clkState}
                         endIcon={<AvTimerIcon
                             style={{ fontSize: 50 }}>send
@@ -450,9 +394,7 @@ export default function AuctionOffProduct(props) {
                     </MaxiButtonASWA>
                 </div>
             </form>
-
             <h1 className="px-6 mb-2 font-black text-red-700 transform bg-gray-500 bg-opacity-75 rounded shadow w-100 modal ">{errorMessage}</h1>
-
             {/* <H2 >{errorMessage}</H2> */}
             {/* close for testing */}
             {/* <span className="absolute px-4 pt-4 pin-t pin-r" >

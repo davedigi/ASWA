@@ -69,7 +69,6 @@ function MainTiles(props) {
     </userContext.Provider> */}
         </div >
         {/* <ListUsers /> */ }
-    {/* <ListProductsTable /> */ }
     {/* <WinnerAuction /> */}
         </div >
     )

@@ -115,7 +115,7 @@ Lo schema ws rappresenta le comunicazioni in chiaro mentre lo schema wss raprese
       return (
          // this.props.running &&
          <div >
-            <WinnerAuction onChange={this.props.onChange} websocket={this.state.dataFromServer} />
+            <WinnerAuction onChange={this.props.onChange} clkState={this.props.clkState} websocket={this.state.dataFromServer} />
          </div>
       )
    }

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { APP_API_URL, APP_API_PORT } from '../../Hooks/apiContants';
+
 import { makeStyles } from "@material-ui/core/styles";
-// eslint-disable-next-line no-unused-vars
-import { useAxiosGet } from "../Hooks/HttpRequests";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,9 +10,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-// eslint-disable-next-line no-unused-vars
-// import Skeleton from "react-loading-skeleton";
-import ProductCard from "./ProductCard";
 
 const useStyles = makeStyles({
   table: {
@@ -19,20 +17,23 @@ const useStyles = makeStyles({
   },
 });
 
-export default class ListProductsTable extends Component {
+export default class ListTransactionsTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { products: [] };
+    this.state = { transactions: [] };
   }
   async componentDidMount() {
-    const url = "https://run.mocky.io/v3/a7d372ef-4a55-447d-9bb2-98c53fed94b3";
+    const url = APP_API_URL + ':' + APP_API_PORT + "/transaction/read"
+    // , { headers: { 'x-access-token': localStorage.getItem(ACCESS_TOKEN_NAME) } })";
     const res = await fetch(url);
+    alert(res.message);
+    
     const json = await res.json();
-    console.log(json);
-    this.setState({ products: json });
+    alert(json.data.data)
+    this.setState({ transactions: json });
   }
   render() {
-    return (
+    return ( this.state.transactions &&
       <div>
         <TableContainer component={Paper}>
           <Table
@@ -42,19 +43,21 @@ export default class ListProductsTable extends Component {
           >
             <TableHead>
               <TableRow>
-                <TableCell>Categ.</TableCell>
-                <TableCell align="right">Code</TableCell>
-                <TableCell align="right">Label</TableCell>
-                <TableCell align="right">Suggest Price</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell align="right">Supplier</TableCell>
+                <TableCell align="right">Product</TableCell>
+                <TableCell align="right">Price</TableCell>
+                <TableCell align="right">Buyer</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.products.map((prd) => (
-                <TableRow key={prd.id}>
-                  <TableCell>categ</TableCell>
-                  <TableCell>{prd.article.code}</TableCell>
-                  <TableCell>{prd.article.item.translatedLabel}</TableCell>
-                  <TableCell>€ 123,34</TableCell>
+              {this.state.transactions.map((trans) => (
+                <TableRow key={trans._id}>
+                  <TableCell>{trans.buyer}</TableCell>
+                  <TableCell>€ {trans.price}</TableCell>
+                  <TableCell>{trans.buyer}</TableCell>
+                  <TableCell>{trans.buyer}</TableCell>
+                  <TableCell>{trans.buyer}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -2,7 +2,7 @@ import React from 'react'
 
 // <Sleep show={true} totMs=20000 interval=1000 />
 export const Sleep = (props) => {
-    const [Data, setData] = React.useState(new Date())
+    const [sleeper, setSleeper] = React.useState(new Date())
 
     function FormattedDate(props) {
         return (
@@ -12,21 +12,21 @@ export const Sleep = (props) => {
 
     React.useEffect(() => {
         const timer = setInterval(() => {
-            setData((Data) => (new Date()))
+            setSleeper((Data) => (new Date()))
         }, props.interval);
         console.log("[SLEEP] totale/lap/interval:", props.totMs, timer, props.interval)
-        if (timer > props.totMs) {
+        if (timer > props.totMs) { //TODO questa cosa è sbagliata - DG
             clearInterval(timer)
         }
         return () => {
             clearInterval(timer);
         }
-    }, [Data])
+    }, [sleeper])
 
     return (
         <>
             {props.show ?
-                <FormattedDate {...Data} />
+                <FormattedDate {...sleeper} />
                 : null
             }
         </>
