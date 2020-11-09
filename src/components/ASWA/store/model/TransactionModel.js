@@ -1,5 +1,6 @@
 import BuyerModel from ''
 import typeProduct from '../../actionServices/TypesAuction'
+import { SupplierModel } from './SupplierModel'
 
 export const TransactionState = {
    CANCELLED: 'CANCELLED',
@@ -9,8 +10,9 @@ export const TransactionState = {
 export const TransactionModel = {
    id: Number,
    typeProduct: typeProduct,
-   price: Number,
+   supplier: SupplierModel,
    buyer: BuyerModel,
+   price: Number,
    state: TransactionState,
    createdAt: String,
    updateAt: String

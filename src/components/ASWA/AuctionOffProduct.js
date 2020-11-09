@@ -10,6 +10,9 @@ import DisplayGDD from './actionServices/DisplayGDD'
 import { H2 } from '../shared/SharedStyleComponents'
 import WebSocketClock from '../../Hooks/WebSocketClock'
 import { useStyles, MidButtonASWA, MaxiButtonASWA } from '../shared/MaxiButtonASWA';
+import { SupplierFmt } from './SupplierFmt'
+import { APP_API_PORT, APP_API_URL } from '../../Hooks/apiContants'
+
 
 /* const item = {
     "id": "G127",
@@ -44,6 +47,19 @@ export default function AuctionOffProduct(props) {
     const [clockParams, setClockParams] = useState({})
     const [errorMessage, setErrorMessage] = useState(null)
 
+/* 
+    // use Context for Transactions
+    const transactions = transactionCrud(APP_API_URL + ':' + APP_API_PORT + '/transaction/create')
+    const initialState = { transactions: transactions }
+
+    const [state, dispatch] = React.useReducer(transactionReducer, initialState)
+
+    const create = (transaction) => {
+        dispatch({
+            type: CREATE_TRANSACTION,
+            payload: transaction
+        })
+    } */
     /*     const [preparedItem, setPreparedItem] = React.useState([     
             {"supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' }},
             {
@@ -76,7 +92,7 @@ export default function AuctionOffProduct(props) {
     const imgURI = flower.imageurl
     const fldescr = flower.descr + ' ' + flower.size
 
-    const [state, setState] = React.useState({
+    const [stateT, setStateT] = React.useState({
         flowerCode: flower.code,
         flowerDescr: fldescr,
         supplierCode: supplier.id,
@@ -207,10 +223,10 @@ export default function AuctionOffProduct(props) {
      */
     const onChangeHandler = (event) => {
         console.log("[AUCTIONOFF] onChangeHandler trap event.target.id onChangeHandler=", event.target.id)
-        localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(state))
+        localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(stateT))
         localStorage.setItem("CLOCK_START_SUPPLIER", supplier)
         const { id, value } = event.target
-        setState(prevState => ({
+        setStateT(prevState => ({
             ...prevState,
             [id]: value
         }))
@@ -237,22 +253,7 @@ export default function AuctionOffProduct(props) {
             <form>
                 <div className="flex">
                     <div className="flex mr-10 space-x-4 ">
-                        <div className="relative w-16 h-16">
-                            <img className="border border-gray-100 rounded-full shadow-sm" src={imgsup} alt="supplier" />
-                            <div className="absolute top-0 right-0 w-4 h-4 my-1 bg-green-400 border-2 border-white rounded-full z-2"></div>
-                        </div>
-                        <div className="md:w-40" >
-                            <span
-                                id="supplierDescr"
-                                className="block ml-1 text-lg font-bold"
-                                onChange={(e) => onChangeHandler(e)}
-                            >
-                                {supplier.legalname}
-                            </span>
-                            <span className="block ml-0 text-base">
-                                {supplier.city}
-                            </span>
-                        </div>
+                        <SupplierFmt supplier={supplier} />
                     </div>
                     {/* <div className="w-10"></div> */}
                     <div className="max-w-sm min-w-full " >
@@ -267,7 +268,7 @@ export default function AuctionOffProduct(props) {
                             // label="Required"
                             // defaultValue="Flower name"
                             id="flowerDescr"
-                            value={state.flowerDescr || 'xxxxx'}
+                            value={stateT.flowerDescr || 'xxxxx'}
                             onChange={(e) => onChangeHandler(e)}
                         />
                         <div className="flex justify-start mb-2 text-xl font-bold align-bottom">
@@ -278,7 +279,7 @@ export default function AuctionOffProduct(props) {
                                 // placeholder={flower.code}
                                 className="w-20 px-2 py-1 m-1 leading-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                                 aria-describedby="flowerCodeHelp"
-                                value={state.flowerCode || 'xxxx'}
+                                value={stateT.flowerCode || 'xxxx'}
                                 onChange={(e) => onChangeHandler(e)}
                             />
                         </div>
@@ -331,13 +332,12 @@ export default function AuctionOffProduct(props) {
                     }
                     {!running
                         && displayGDD
-                        && <DisplayGDD state={state}
+                        && <DisplayGDD state={stateT}
                             showError={setErrorMessage}
                         />
                     }
                     {!running &&
                         <div className="">
-
                             <div className="inline-block m-1 font-bold ">
                                 <span className="text-lg">Min price: €</span>
                                 <span className="w-4 h-4 m-1 text-2xl">{flower.minprice}</span>
@@ -401,6 +401,13 @@ export default function AuctionOffProduct(props) {
                 <svg className="w-6 h-6 text-grey hover:text-gray-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
             </span > */}
             {/* <h1 className="relative z-10 px-12 py-6 mb-4 font-extrabold text-red-700 bg-gray-500 bg-opacity-75 rounded shadow">{errorMessage}</h1> */}
-        </div >
+{/*      <transactionContext.Provider
+        value={{
+            transactions: state.transactions,
+            createTransaction
+        }}>
+
+    </transactionContext.Provider>         
+ */}    </div >
     )
 }

@@ -9,6 +9,8 @@ export const BuyerModel = {
    id: Number,
    typeBuyer: typeBuyer,
    person: PersonModel,
+   legalName: String,
+   businessName: String,
    fiscalCode: String,
    VATNumber: String,
    active: Number,

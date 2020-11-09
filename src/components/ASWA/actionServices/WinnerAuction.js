@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Alert } from '../../shared/Alert';
 import { IClockStates, clockStates } from "./TypesAuction"
+import { getFieldInJsonString, formatCurrencyEUR } from '../../shared/SharedUtils'
 
 export const WinnerAuction = (props) => {
 
@@ -18,23 +19,7 @@ export const WinnerAuction = (props) => {
       INIT: 'INIT'
    }
 
-   // ✅ ES6 Way
-   function formatCurrencyEUR(price) {
-      const money = price / 100;
-      const value = new Intl.NumberFormat('it-IT',
-         { style: 'currency', currency: 'EUR' }
-      ).format(money);
-      return value;
-   }
 
-   /* TODO escape string in input with backslashes, otherwise cant do the right parsing */
-   function getFieldInJsonString(index, str, test) {
-      let arr = str.split(',');
-      const temp = (arr[index].split(':')[1]);
-      test = temp.slice(1, temp.length - 1);
-      // console.log('getFieldInJsonString found==', test);
-      return test;
-   }
 
    function ASWAButton(props) {
       const RebidBtn = (props) => (
@@ -109,7 +94,7 @@ export const WinnerAuction = (props) => {
       const handleClickCancel = (e) => {
          e.preventDefault();
          console.log('[handleClickCancel] props=', props.oncha)
-         alert(e.target.id)
+         // alert(e.target.id)
          // setShow(false)
          props.oncha(clockStates.CANCELLED, ClockWinnerState.CANCELLED, 'CANCELLED from auctioner Action Called');
       }
@@ -117,7 +102,7 @@ export const WinnerAuction = (props) => {
       const handleClickSale = (e) => {
          e.preventDefault();
          console.log('[handleClickSale] props=', props.oncha)
-         alert(e.target.id)
+         // alert(e.target.id)
          // setShow(false)
          props.oncha(clockStates.CANCELLED, ClockWinnerState.REGISTERED, 'SALE from auctioner Action Called');
       }

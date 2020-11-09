@@ -1,8 +1,9 @@
 import React from 'react'
 import ClockTick from './ClockTick'
-
+import FormatDate from './FormatDate'
 
 const Header = (props) => {
+
     return (
         // <nav className="flex items-center justify-center p-4 bg-teal-500">
         //     <div className="flex mr-6 text-white">
@@ -16,6 +17,9 @@ const Header = (props) => {
         <nav className="fixed z-10 flex flex-wrap items-center justify-between w-full p-1 bg-teal-500 pin-t">
             <div className="flex items-center mr-6 text-white flex-no-shrink">
                 <img className="w-10 mx-2" src={require('../../logo.svg')} alt="logo" />
+                <span className="mr-2">
+                    <FormatDate format="DD/MM/YYYY" dateToFormat={Date.now()} />
+                </span>
                 <ClockTick />
                 <a className="text-white no-underline hover:text-white hover:no-underline" href="/#">
                     <span className="pl-6 text-2xl">

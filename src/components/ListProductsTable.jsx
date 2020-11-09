@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-// eslint-disable-next-line no-unused-vars
-import { useAxiosGet } from "../Hooks/HttpRequests";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";

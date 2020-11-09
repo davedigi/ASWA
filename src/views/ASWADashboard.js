@@ -2,6 +2,8 @@ import React from 'react';
 import MenuIcons from '../components/ASWA/MenuIcons';
 import AuctionOffProduct from "../components/ASWA/AuctionOffProduct"
 import Header from "../components/shared/Header"
+import ListTransactionTable from "../components/ASWA/ListTransactionsTable"
+import { Counter } from '../components/ASWA/store/Counter'; 
 
 const preparedModel = [
     { "supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' } },
@@ -39,11 +41,12 @@ export default function ASWADashboard() {
     const [preparedItem, setPreparedItem] = React.useState(preparedModel, [])
 
     return (
-        // <div className="container">
-        <div>
-            <Header title="Auction Sales System" />
+        <div className='border'>
+            <Header />
             {/* <Navbar items={menu}/> */}
+            <div className="mt-16"></div>
             <AuctionOffProduct preparedItem={preparedItem} />
+            <Counter />
             {/* <MenuIcons /> */}
             {/* <ASWAFooter /> */}
         </div>
