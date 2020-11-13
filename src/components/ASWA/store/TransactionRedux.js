@@ -1,32 +1,61 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ListTransactionsTable from '../ListTransactionsTable'
-import TransactionReducer from './TransactionReducer'
 import { CREATE_TRANSACTION, READ_TRANSACTIONS } from './types'
 import { useSelector, useDispatch } from 'react-redux'
-import { Counter } from './Counter'
+import { unwrapResult } from '@reduxjs/toolkit'
 
-export const Transaction = () => {
+import TransactionReducer, {
+   selectTransactions,
+   fetchTrans
+} from './TransactionReducer'
+
+
+export const TransactionRedux = () => {
+   const transactions = useSelector(selectTransactions);
+
+   const dispatch = useDispatch();
+   const [tr2, setTr2] = useState(transactions)
    /*
    const users = useCrud("http://jsonplaceholder.typicode.com/users")
    const initialState = { users: users }
    
    const [state, dispatch] = React.useReducer(userReducer, initialState)
    */
-   const state = useSelector(state => state.transaction)
-   const dispatch = useDispatch()
-
-   let onUpdateHandler = state => dispatch(TransactionReducer(state,{ type: READ_TRANSACTIONS, payload: null }))
    // dispatch(TransactionReducer(state,{ type: READ_TRANSACTIONS, payload: null }))
-   return <>
-      {/* <ListTransactionsTable
-         item={state}
-         onUpdate={onUpdateHandler}
-         onAdd={(trans) => dispatch(TransactionReducer({ type: CREATE_TRANSACTION, payload: trans }))}
-      // onChange={(id) => dispatch(changeTrans(id))}
-      /> */}
 
-   </>
+   const dispatchReadTrans = async () => {
+      dispatch(fetchTrans())
+         .then(unwrapResult)
+         .then(result => {
+            console.log('PRONTO DA RENDERIZZARE res:', result);
+            setTr2(result)
+
+            return result.data;
+         })
+         .catch(serializedError => {
+            console.log('error!!:', serializedError);
+         })
+   }
+
+   React.useEffect(() => {
+      dispatchReadTrans()
+      console.log('chiamato USEEFEECT tr2:', tr2)
+   }, [])
+   console.log('RENDER ', tr2.data)
+
+   return (
+      <>
+         <div className="">
+            {tr2.data && (
+               Object.keys(tr2.data).length === 0
+                  ? <p>No results</p>
+                  : <div>{/* There are {Object.keys(tr2.data).length} results. */}
+
+                     <ListTransactionsTable items={transactions} reduxTrans={tr2.data} />
+                  </div>
+            )}
+         </div>
+      </>
+   )
 }
-
-
-
+export default TransactionRedux

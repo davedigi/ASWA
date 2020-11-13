@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import logger from 'redux-logger'
 import TransactionReducer from './components/ASWA/store/TransactionReducer';
 import counterReducer from './components/ASWA/store/counterSlice';
 
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
 })
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 })
 
 ReactDOM.render(

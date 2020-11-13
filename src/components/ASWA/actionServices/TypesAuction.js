@@ -25,6 +25,17 @@ export interface IClockStates {
    Label?: string;
    State: clockStates;
 }
+
+export const ClockWinnerState = {
+   PENDING: 'PENDING',
+   CANCELLED: 'CANCELLED',
+   REGISTERED: 'REGISTERED'
+}
+
+export const SocketType = {
+   WINNER: 'WINNER',
+   INIT: 'INIT'
+}
 // class Demo extends React.Component<IclockStates> {}
 // let d = <Demo State={State.START} />
 

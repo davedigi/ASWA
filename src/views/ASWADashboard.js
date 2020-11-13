@@ -1,9 +1,8 @@
-import React from 'react';
-import MenuIcons from '../components/ASWA/MenuIcons';
+import React from 'react'
+import MenuIcons from '../components/ASWA/MenuIcons'
 import AuctionOffProduct from "../components/ASWA/AuctionOffProduct"
 import Header from "../components/shared/Header"
-import ListTransactionTable from "../components/ASWA/ListTransactionsTable"
-import { Counter } from '../components/ASWA/store/Counter'; 
+import TransactionRedux from '../components/ASWA/store/TransactionRedux'
 
 const preparedModel = [
     { "supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' } },
@@ -46,7 +45,10 @@ export default function ASWADashboard() {
             {/* <Navbar items={menu}/> */}
             <div className="mt-16"></div>
             <AuctionOffProduct preparedItem={preparedItem} />
-            <Counter />
+            <div className="max-w-full p-2 overflow-hidden text-center text-gray-700 bg-green-300 rounded-lg shadow-lg flex-column min-w-sm" >
+                <TransactionRedux />
+            </div>
+            {/* <Counter /> */}
             {/* <MenuIcons /> */}
             {/* <ASWAFooter /> */}
         </div>

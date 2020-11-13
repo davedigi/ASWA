@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AvTimerIcon from '@material-ui/icons/AvTimer'
 import RotateRightIcon from '@material-ui/icons/RotateRight'
-import TextField from "@material-ui/core/TextField"
-import { IClockStates, clockStates } from "./actionServices/TypesAuction"
+import { IClockStates, clockStates, ClockWinnerState, SocketType } from "./actionServices/TypesAuction"
 import StartAuction2 from './actionServices/StartAuction2'
 import StopAuction from './actionServices/StopAuction'
 import DownAuction from './actionServices/DownAuction'
@@ -11,33 +10,13 @@ import { H2 } from '../shared/SharedStyleComponents'
 import WebSocketClock from '../../Hooks/WebSocketClock'
 import { useStyles, MidButtonASWA, MaxiButtonASWA } from '../shared/MaxiButtonASWA';
 import { SupplierFmt } from './SupplierFmt'
-import { APP_API_PORT, APP_API_URL } from '../../Hooks/apiContants'
+import { CREATE_TRANSACTION } from './store/types'
+import { useSelector, useDispatch } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { createTransDB, createTransactions, create_transaction } from './store/TransactionReducer'
+import { FlowerDescr } from './FlowerDescr'
 
-
-/* const item = {
-    "id": "G127",
-    "finalPrice": null,
-    "minOrderableQuantity": 5,
-    "stockQuantity": 95,
-    "metaFields": {
-        "vdpStock": "flowers",
-        "properties": {
-            "stemHeight": 6
-        },
-        "initialStockQty": 95
-    },
-    "imageUrl": "https://pictures.flowerwebshop.net/pictures//X3286655_H_1.jpg",
-    "availableQuantity": 95,
-    "article": {
-        "code": "2712",
-        "item": {
-            "slug": "droogbl-bewerkt-h",
-            "translatedLabel": "Droogbloemen bewerkt H%"
-        }
-    }
-} */
-
-export default function AuctionOffProduct(props) {
+export const AuctionOffProduct = (props) => {
     const classes = useStyles()
     const [running, setRunning] = useState(false)
     const [clkState, setClkState] = useState(clockStates.IDLE)
@@ -47,22 +26,28 @@ export default function AuctionOffProduct(props) {
     const [clockParams, setClockParams] = useState({})
     const [errorMessage, setErrorMessage] = useState(null)
 
-/* 
-    // use Context for Transactions
-    const transactions = transactionCrud(APP_API_URL + ':' + APP_API_PORT + '/transaction/create')
-    const initialState = { transactions: transactions }
+    const writeTrans = useSelector(createTransactions)
+    const dispatch = useDispatch();
 
-    const [state, dispatch] = React.useReducer(transactionReducer, initialState)
+    const dispatchCreateTrans = async (payload) => {
 
-    const create = (transaction) => {
-        dispatch({
-            type: CREATE_TRANSACTION,
-            payload: transaction
-        })
-    } */
+        /*         dispatch(create_transaction({ type: CREATE_TRANSACTION, payload: payload }))
+                    .then(unwrapResult)
+                    .then(result => {
+                        console.log('WRITE CREATE_TRANSACTIONE DONE! res:', result);
+                        return result.data;
+                    })
+                    // .catch(serializedError => {
+                    //     console.log('error!!:', serializedError);
+                    .catch(error => {
+                        console.log('error!!:', error);
+                    }) */
+
+        createTransDB({ type: CREATE_TRANSACTION, payload: payload })
+    }
     /*     const [preparedItem, setPreparedItem] = React.useState([     
-            {"supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' }},
-            {
+        {"supplier": { id: 1, legalname: 'Floreal Garofalo', city: 'Pozzallo(RG)' }},
+        {
             "product": {
                 id: 1,
                 code: "G127",
@@ -74,7 +59,7 @@ export default function AuctionOffProduct(props) {
                 suggestedprice: 1267
             }
         },
-        ]) */
+    ]) */
     const arr = Object.entries(props.preparedItem);
     // console.log('[AUCTIONOFF] preparedItem arr in entrata=', arr)
     const supplier = arr[0][1].supplier
@@ -118,7 +103,7 @@ export default function AuctionOffProduct(props) {
 
     // CLOCK ERROR HANDLE
     useEffect(() => {
-        console.info("[AUCTIONOFF] USEEFFECT per setRunnig a ")
+        console.info("[AUCTIONOFF] USEEFFECT per setRunning a ")
         if (errorMessage) {
             setRunning(false)
             console.info("false")
@@ -126,17 +111,16 @@ export default function AuctionOffProduct(props) {
         } else {
             console.info(running)
         }
-
-    }, [errorMessage])
+    }, [errorMessage, running])
 
     const handleClick = ((mystate, transaction, msg) => {
-        console.log("[AUCTIONOFF][handleClick]", mystate, transaction, msg)
+        console.log("[AUTOMA A STATI FINITI][handleClick]", mystate, transaction, msg)
         // const rand = 1 + Math.random() * (60)
         const rand = 30 // DEBUG TODO
 
         switch (mystate) {
             case clockStates.IDLE:
-                console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
+                console.log("[AUTOMA A STATI FINITI] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setErrorMessage(null)
                 setDisplayState(clockStates.STOP)
@@ -145,7 +129,7 @@ export default function AuctionOffProduct(props) {
             case clockStates.START:
                 if (clockParams.spin) {
                     setErrorMessage(null)
-                    console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
+                    console.log("[AUTOMA A STATI FINITI] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                     setClkState(clockStates.STOP)
                     setDisplayState(clockStates.STOP)
                     setDisplayGDD(false)
@@ -156,31 +140,53 @@ export default function AuctionOffProduct(props) {
             case clockStates.UP:
                 setErrorMessage(null)
                 setclockwiseBtn(true)
-                console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.DOWN)
+                console.log("[AUTOMA A STATI FINITI] Automa da STATO: ", mystate, ' --> ', clockStates.DOWN)
                 setClkState(clockStates.DOWN)
                 setDisplayState(clockStates.DOWN)
                 setDisplayGDD(false)
                 setRunning(true);
                 break;
             case clockStates.DOWN:
-                console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
+                console.log("[AUTOMA A STATI FINITI] Automa da STATO: ", mystate, ' --> ', clockStates.STOP)
                 setClkState(clockStates.STOP)
                 setDisplayState(clockStates.STOP)
                 setDisplayGDD(false)
                 setRunning(true);
                 break;
             case clockStates.STOP:
-                console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.CANCELLED)
+                console.log("[AUTOMA A STATI FINITI] Automa da STATO: ", mystate, ' --> ', clockStates.CANCELLED)
                 setClkState(clockStates.CANCELLED)
                 setDisplayState(clockStates.CANCELLED)
                 setDisplayGDD(false)
                 setRunning(false);
                 break;
             case clockStates.CANCELLED:
-                // ClockWinnerState REGISTERED
-                // ClockWinnerState CANCELLED
-
                 setErrorMessage(null)
+                // {"id":1,"code":"G127","descr":"Gerbere Milanesi ","size":"gambo lungo","imageurl":"/gerbere-milanesi.jpg","minprice":1020,"suggestedprice":1267}
+                const payload = {
+                    "supplier": localStorage.getItem('CLOCK_START_SUPPLIER'),
+                    "product": localStorage.getItem('CLOCK_START_PRODUCT'),
+                    "buyer": msg.buyer > 0 ? msg.buyer : '0',
+                    "price": msg.price ? msg.price : '0',
+                    "state": ClockWinnerState.REGISTERED
+                }
+                switch (transaction) {
+                    case ClockWinnerState.REGISTERED:
+                        payload.state = ClockWinnerState.REGISTERED
+                        console.log('payload REGISTERED:', payload)
+                        dispatchCreateTrans(payload);
+                        setErrorMessage(`CALLED ACTION for ${transaction} BUYER ${msg.buyer}`)
+                        break;
+                    case ClockWinnerState.CANCELLED:
+                        payload.state = ClockWinnerState.CANCELLED
+                        setErrorMessage(`CALLED ACTION for ${transaction} BUYER ${msg.buyer}`)
+                        console.log('payload REGISTERED:', payload)
+                        dispatchCreateTrans(payload);
+                        break;
+                    default:
+                        // setErrorMessage(`Invalid ACTION for TRANSACTION:${transaction}`)
+                        break;
+                }
                 setclockwiseBtn(false)
                 console.log("[AUCTIONOFF] Automa da STATO: ", mystate, ' --> ', clockStates.IDLE)
                 setClkState(clockStates.IDLE)
@@ -224,7 +230,7 @@ export default function AuctionOffProduct(props) {
     const onChangeHandler = (event) => {
         console.log("[AUCTIONOFF] onChangeHandler trap event.target.id onChangeHandler=", event.target.id)
         localStorage.setItem("CLOCK_START_PRODUCT", JSON.stringify(stateT))
-        localStorage.setItem("CLOCK_START_SUPPLIER", supplier)
+        localStorage.setItem("CLOCK_START_SUPPLIER", JSON.stringify(supplier))
         const { id, value } = event.target
         setStateT(prevState => ({
             ...prevState,
@@ -235,42 +241,45 @@ export default function AuctionOffProduct(props) {
         if (event.target.id === "minpriceedit") setDisplayGDD(true)
         else setDisplayGDD(false)
     }
-    // onKeyDown(event) {
-    //     if (event.keyCode === RETURN_KEY_CODE) {
-    //         let text = event.target.value.trim();
-    //         if (text == '') {
-    //             return;
-    //         }
-    //         TodosStore.add(event.target.value.trim());
 
-    //         // clear input
-    //         event.target.value = '';
-    //     }
-    // }
+    const onBlurHandler = (event) => {
+        console.log("[AUCTIONOFF] trap event.target.id onChangeHandler=", event.target.id)
+        if (event.target.id === "flowerDescr") setDisplayGDD(true)
+        else setDisplayGDD(false)
+    }
+
+    const onKeyDown = (event) => {
+
+        if (event.keyCode === "PageDown") {
+            console.log("[AUCTIONOFF] trap event.target.id ONkeyDOWN=", event.target.id)
+
+        }
+
+        if (event.keyCode === "Enter") {
+            console.log("[AUCTIONOFF] trap event.target.id ONkeyDOWN=", event.target.id)
+            let text = event.target.value.trim();
+            if (text == '') {
+                return;
+            }
+            // clear input
+            event.target.value = '';
+        }
+    }
     const imgsup = "https://randomuser.me/api/portraits/women/" + (clockParams.spin ? clockParams.spin : 1) + ".jpg"
     return (
         <div className="max-w-xl px-4 py-2 m-2 overflow-hidden text-center text-gray-700 bg-green-300 rounded-lg shadow-lg flex-column min-w-sm">
             <form>
                 <div className="flex">
                     <div className="flex mr-10 space-x-4 ">
-                        <SupplierFmt supplier={supplier} />
+                        <SupplierFmt imgsup={imgsup} supplier={supplier} />
                     </div>
                     {/* <div className="w-10"></div> */}
-                    <div className="max-w-sm min-w-full " >
-                        <TextField className="mb-3 text-3xl font-bold"
-                            helperText="F2 help"
-                            fullWidth
-                            // margin="normal"
-                            // InputLabelProps={{
-                            //     shrink: true,
-                            // }}
-                            // required
-                            // label="Required"
-                            // defaultValue="Flower name"
-                            id="flowerDescr"
-                            value={stateT.flowerDescr || 'xxxxx'}
-                            onChange={(e) => onChangeHandler(e)}
-                        />
+                    <div className="max-w-sm min-w-full md:flex-shrink-0 " >
+                        <FlowerDescr flowerDescr={stateT.flowerDescr}
+                            onBlurHandler={onBlurHandler}
+                            onChangeHandler={onChangeHandler}
+                            onKeyDown={onKeyDown} >
+                        </FlowerDescr>
                         <div className="flex justify-start mb-2 text-xl font-bold align-bottom">
                             <span className="h-5 text-lg align-text-bottom ">Code:
                                 </span>
@@ -279,7 +288,7 @@ export default function AuctionOffProduct(props) {
                                 // placeholder={flower.code}
                                 className="w-20 px-2 py-1 m-1 leading-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                                 aria-describedby="flowerCodeHelp"
-                                value={stateT.flowerCode || 'xxxx'}
+                                value={stateT.flowerCode || ''}
                                 onChange={(e) => onChangeHandler(e)}
                             />
                         </div>
@@ -292,9 +301,8 @@ export default function AuctionOffProduct(props) {
                     // showError={setErrorMessage}
                     running={running}
                 />
-                <div className="flex max-w-sm pr-2 mx-auto mt-8">
+                <div className="flex max-w-sm pr-2 mx-auto mt-8 ">
                     <div className="inline-block px-2 py-2 ml-2 rounded-xl ">
-                        {/* <img classNames="h-10" src={"https://upload.wikimedia.org/wikipedia/commons/7/76/Magnolia_liliiflora3.jpg"} alt={flower.descr} /> */}
                         {/* <img className="w-56 sm:w-64" src={imgURI} alt={flower.descr} /> */}
                         <img className="object-cover w-56 sm:w-64" src={imgURI} alt={flower.descr} />
                         {/* <div>test UP={(clockwiseBtn) ? 'true' : 'false'}</div> */}
@@ -365,15 +373,16 @@ export default function AuctionOffProduct(props) {
                                 <span className="w-4 h-4 m-1 text-2xl">{flower.suggestedprice}</span>
                                 <span aria-hidden="true"></span>
                             </div>
-                            <div className="mt-4 text-xl font-bold ">
+                            <div className="mt-2 text-xl font-bold ">
                                 <span className="mr-2">Spin</span>
                                 <select><option>{clockParams.spin}</option></select>
                             </div>
                         </div>
                     }
                 </div>
-                <div>
+                <div className="md:flex-shrink-0">
                     <MidButtonASWA variant="contained" className={classes.button}
+                        disabled={running && clockwiseBtn}
                         value={clockwiseBtn}
                         endIcon={<RotateRightIcon
                             style={{ fontSize: 50 }}>send
@@ -384,7 +393,7 @@ export default function AuctionOffProduct(props) {
                     </MidButtonASWA>
 
                     <MaxiButtonASWA variant="contained" className={classes.button}
-                        disabled={running}
+                        // disabled={running}
                         value={clkState}
                         endIcon={<AvTimerIcon
                             style={{ fontSize: 50 }}>send
@@ -401,7 +410,7 @@ export default function AuctionOffProduct(props) {
                 <svg className="w-6 h-6 text-grey hover:text-gray-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
             </span > */}
             {/* <h1 className="relative z-10 px-12 py-6 mb-4 font-extrabold text-red-700 bg-gray-500 bg-opacity-75 rounded shadow">{errorMessage}</h1> */}
-{/*      <transactionContext.Provider
+            {/*      <transactionContext.Provider
         value={{
             transactions: state.transactions,
             createTransaction
@@ -411,3 +420,4 @@ export default function AuctionOffProduct(props) {
  */}    </div >
     )
 }
+export default AuctionOffProduct

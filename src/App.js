@@ -8,8 +8,6 @@ import Login from './components/shared/Login';
 import logo from "./logo.svg"
 import PrivateRoute from './components/shared/PrivateRoute'
 import AlertComponent from "./components/shared/AlertComponent";
-import ModelDialog from "./components/shared/ModelDialog"
-
 
 const onLogout = async () => {
   return <div>logout...</div>;
@@ -85,6 +83,7 @@ function App() {
               {/* <PrivateRoute path="/listproducts" component={ListProductsGrid} /> */}
             </Switch>
             <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage} />
+            {/* <ListTransactionsTable /> */}
           </div>
           <Footer />
         </div>

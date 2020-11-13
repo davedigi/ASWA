@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit'
 import {
   decrement,
   increment,
   incrementByAmount,
   incrementAsync,
   selectCount,
+} from './counterSlice'
+
+import {
   read_transactions,
   selectTransactions,
   fetchTrans
-} from './counterSlice';
+} from './TransactionReducer'
+
 import styles from './Counter.module.css';
 import ListTransactionsTable from '../ListTransactionsTable';
 
@@ -18,10 +23,29 @@ export function Counter() {
   const transactions = useSelector(selectTransactions);
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
-dispatch(fetchTrans())
+  const [tr2, setTr2] = useState(transactions)
+
+  const dispatchReadTrans = async () => {
+    dispatch(fetchTrans())
+      .then(unwrapResult)
+      .then(result => {
+        console.log('PRONTO DA RENDERIZZARE res:', result);
+        setTr2(result)
+
+        return result.data;
+      })
+      .catch(serializedError => {
+        console.log('error!!:', serializedError);
+      })
+  }
+
+  React.useEffect(() => {
+    dispatchReadTrans()
+    console.log('chiamato USEEFEECT tr2:', tr2)
+  }, [])
+  console.log('RENDER ',tr2.data)
   return (
     <div>
-      <ListTransactionsTable reduxTrans={transactions}/>
       <div className={styles.row}>
         <button
           className={styles.button}
@@ -30,18 +54,12 @@ dispatch(fetchTrans())
         >
           +
         </button>
-        {transactions && (
-          Object.keys(transactions).length === 0
-            ? <p>No results</p>
-            : <div>There are {Object.keys(transactions).length} results.
-              {
-
-                // arr.map((item) => (
-                //   <span key={item[1].id} className="block" >
-                //     {item[1].name}
-                //   </span>
-                // ))
-              }
+        {tr2.data && (
+          Object.keys(tr2.data).length === 0
+          ? <p>No results</p>
+          : <div>{/* There are {Object.keys(tr2.data).length} results. */}
+              
+                <ListTransactionsTable items={transactions} reduxTrans={tr2.data} />
             </div>
         )}
         <span className={styles.value}>{count}</span>
@@ -70,7 +88,7 @@ dispatch(fetchTrans())
         </button>
         <button
           className={styles.asyncButton}
-          onClick={() => dispatch(read_transactions(Number(incrementAmount) || 0))}
+          onClick={() => dispatchReadTrans()}
         >
           READ Trans
         </button>
@@ -82,5 +100,5 @@ dispatch(fetchTrans())
         </button>
       </div>
     </div>
-  );
+  )
 }

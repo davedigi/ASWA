@@ -112,11 +112,9 @@ export const StartAuction2 = (props) => {
       <div>
          {/* <span>START OROLOGIO! </span> */}
          {/* <Sleep show={true} totMs={5000} interval={1000} /> */}
-         <span className="block">GIRI DI PARTENZA: {props.clockParams.spin} </span>
-
+         {/* <span className="block">GIRI DI PARTENZA: {props.clockParams.spin} </span> */}
          <div className="mt-2 timer-font"><Timer spin={props.clockParams.spin} loop={false} /></div>
       </div>
    )
 }
-
 export default StartAuction2

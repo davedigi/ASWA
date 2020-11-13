@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Alert } from '../../shared/Alert';
-import { IClockStates, clockStates } from "./TypesAuction"
+import { IClockStates, clockStates, ClockWinnerState, SocketType } from "./TypesAuction"
 import { getFieldInJsonString, formatCurrencyEUR } from '../../shared/SharedUtils'
 
 export const WinnerAuction = (props) => {
@@ -8,22 +8,9 @@ export const WinnerAuction = (props) => {
    const { SaleBtn, CancelBtn, RebidBtn } = ASWAButton(props);
    const [show, setShow] = useState(false)
 
-   const ClockWinnerState = {
-      PENDING: 'PENDING',
-      CANCELLED: 'CANCELLED',
-      REGISTERED: 'REGISTERED'
-   }
-
-   const SocketType = {
-      WINNER: 'WINNER',
-      INIT: 'INIT'
-   }
-
-
-
    function ASWAButton(props) {
       const RebidBtn = (props) => (
-         <button className="flex-1 px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded md:flex-none border-red hover:bg-red-100"
+         <button className="flex-1 px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded-lg md:flex-none border-red hover:bg-red-100"
             id="rebidbtn"
             onClick={props.oncli}
          >
@@ -32,7 +19,7 @@ export const WinnerAuction = (props) => {
       );
 
       const CancelBtn = (props) => (
-         <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded border-red hover:bg-red-100"
+         <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded-lg border-red hover:bg-red-100"
             id="cancelbtn"
             onClick={props.oncli}
          >
@@ -41,7 +28,7 @@ export const WinnerAuction = (props) => {
       );
 
       const SaleBtn = (props) => (
-         <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded border-green hover:bg-green-100"
+         <button className="flex-1 flex-none px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded-lg border-green hover:bg-green-100"
             id="salebtn"
             onClick={props.oncli}
          >
@@ -96,7 +83,7 @@ export const WinnerAuction = (props) => {
          console.log('[handleClickCancel] props=', props.oncha)
          // alert(e.target.id)
          // setShow(false)
-         props.oncha(clockStates.CANCELLED, ClockWinnerState.CANCELLED, 'CANCELLED from auctioner Action Called');
+         props.oncha(clockStates.CANCELLED, ClockWinnerState.CANCELLED, { socketType, buyer, price });
       }
 
       const handleClickSale = (e) => {
@@ -104,13 +91,13 @@ export const WinnerAuction = (props) => {
          console.log('[handleClickSale] props=', props.oncha)
          // alert(e.target.id)
          // setShow(false)
-         props.oncha(clockStates.CANCELLED, ClockWinnerState.REGISTERED, 'SALE from auctioner Action Called');
+         props.oncha(clockStates.CANCELLED, ClockWinnerState.REGISTERED, { socketType, buyer, price });
       }
 
       const value = formatCurrencyEUR(price);
       return (<>
          {show ? (
-            <div className="px-6 font-black text-gray-700 transform bg-gray-500 bg-opacity-75 shadow rounded- w-100 ">
+            <div className="w-full px-6 font-black text-gray-700 transform bg-gray-500 bg-opacity-75 rounded-lg shadow ">
                <div className="fixed z-10 flex bg-gray-700 bg-opacity-75 animated fadeIn pin" >
                   <div className="fixed relative flex flex-col justify-center justify-end h-auto p-2 m-auto align-top rounded shadow shadow-inner animated fadeInUp pin-b pin-x"
                   // <div className="fixed relative flex flex-col justify-center justify-end w-full h-auto max-w-md p-2 m-auto align-top rounded shadow shadow-inner animated fadeInUp pin-b pin-x"
@@ -125,15 +112,8 @@ export const WinnerAuction = (props) => {
                         <span className="font-black"> {value}</span>
                      </div>
                      <div className="inline-flex justify-center">
-                        <SaleBtn oncli={handleClickSale} ></SaleBtn>
+                        {buyer>0 && <SaleBtn oncli={handleClickSale} ></SaleBtn>}
                         <CancelBtn oncli={handleClickCancel} ></CancelBtn>
-                        {/* <button type="button"
-                           id="rebidbtn"
-                           onClick={handleClickRebid}
-                           className="flex-1 px-6 py-4 ml-2 font-bold text-gray-900 bg-gray-100 border-b-2 rounded md:flex-none border-red hover:bg-red-100"
-                        >
-                           REBID
-                     </button> */}
                         <RebidBtn oncli={handleClickRebid} ></RebidBtn>
                      </div >
                   </div >

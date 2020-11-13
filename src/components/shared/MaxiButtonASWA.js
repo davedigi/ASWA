@@ -14,7 +14,7 @@ export const MaxiButtonASWA = withStyles((theme) => ({
             backgroundColor: orange[700],
         },
         margin: 10,
-        marginTop: 100,
+        marginTop: 80,
     },
 }))(Button);
 export const MidButtonASWA = withStyles((theme) => ({
