@@ -267,7 +267,7 @@ export const AuctionOffProduct = (props) => {
     }
     const imgsup = "https://randomuser.me/api/portraits/women/" + (clockParams.spin ? clockParams.spin : 1) + ".jpg"
     return (
-        <div className="max-w-xl px-4 py-2 m-2 overflow-hidden text-center text-gray-700 bg-green-300 rounded-lg shadow-lg flex-column min-w-sm">
+        <div className="max-w-xl px-4 py-2 m-1 overflow-hidden text-center text-gray-700 bg-green-300 rounded-lg shadow-lg flex-column min-w-sm">
             <form>
                 <div className="flex">
                     <div className="flex mr-10 space-x-4 ">
@@ -380,7 +380,7 @@ export const AuctionOffProduct = (props) => {
                         </div>
                     }
                 </div>
-                <div className="md:flex-shrink-0">
+                <div className="">
                     <MidButtonASWA variant="contained" className={classes.button}
                         disabled={running && clockwiseBtn}
                         value={clockwiseBtn}

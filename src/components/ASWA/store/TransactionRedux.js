@@ -41,7 +41,7 @@ export const TransactionRedux = () => {
       dispatchReadTrans()
       console.log('chiamato USEEFEECT tr2:', tr2)
    }, [])
-   console.log('RENDER ', tr2.data)
+   console.log('[TRANSACTIONREDUX] RENDER ', tr2.data)
 
    return (
       <>

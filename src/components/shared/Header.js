@@ -1,7 +1,8 @@
 import React from 'react'
 import ClockTick from './ClockTick'
 import FormatDate from './FormatDate'
-
+import MenuIcons from "../ASWA/MenuIcons"
+   
 const Header = (props) => {
 
     return (
@@ -35,9 +36,9 @@ const Header = (props) => {
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
                 </button>
             </div>
-
-            <div className="flex-grow hidden w-full pt-6 lg:flex lg:items-center lg:w-auto lg:pt-0" id="nav-content">
-                <ul className="items-center justify-end flex-1 list-reset lg:flex">
+            <div><MenuIcons /></div>
+            <div className="flex-grow hidden w-full pt-6 md:flex md:items-center md:w-auto md:pt-0" id="nav-content">
+                <ul className="items-center justify-end flex-1 list-reset md:flex">
                     <li className="mr-3">
                         <a className="inline-block px-4 py-2 text-white no-underline" href="/#">Profile</a>
                     </li>

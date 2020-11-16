@@ -48,24 +48,26 @@ export default function ListUsers() {
   };
 
   return (
-    <div className="mt-8 w-full rounded bg-white shadow max-w-2xl flex-row items-center px-10">
-      <h1 className="text-xl font-bold mb-3">Buyers in the stand</h1>
+    <div className="flex-row items-center w-full max-w-2xl px-10 mt-8 bg-white rounded shadow">
+      <h1 className="mb-3 text-xl font-bold">Buyers in the stand</h1>
       <List dense className={classes.root}>
-        {[0, 1, 2, 3].map((value) => {
+        {["Alex", "David", "Annie", "LadyGaga"].map((value, idx) => {
           // TODO: inserire un modello di acquirenti valido
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
-            <ListItem key={value} button>
+            <ListItem key={idx} button>
               <ListItemAvatar>
-                <Avatar
-                  alt={`Avatar n°${value + 1}`}
-                  src={`/static/images/avatar/${value + 1}.jpg`}
-                />
+                <div className="relative w-10 h-10">
+                  <img
+                    className="border border-gray-100 rounded-full shadow-sm"
+                    // src={`/assets/buyer/static/img/avatar/${idx + 1}.jpg`}
+                    src={`https://randomuser.me/api/portraits/women/${idx + 1}.jpg`}
+                    alt="supplier"
+                  />
+                  <div className="absolute top-0 right-0 w-3 h-3 my-1 bg-green-400 border-2 border-white rounded-full z-2"></div>
+                </div>
               </ListItemAvatar>
-              <ListItemText
-                id={labelId}
-                primary={`Buyer number ${value + 1}`}
-              />
+              <ListItemText id={labelId} primary={`${value}`} />
               <ListItemSecondaryAction>
                 <WifiIcon />
                 <Switch
